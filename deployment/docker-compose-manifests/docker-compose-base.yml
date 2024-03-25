@@ -7,7 +7,7 @@ services:
 #      - 5672:5672
 #      - 15672:15672
 #    networks:
-#      - my-network
+#      - train-ticket
 
   # kafka:
   #   container_name: kafka
@@ -16,370 +16,370 @@ services:
   #    - 2181:2181
   #    - 9092:9092
   #   networks:
-  #     - my-network
+  #     - train-ticket
 
 #  zipkin:
 #    image: openzipkin/zipkin
 #    ports:
 #      - 9411:9411
 #    networks:
-#      - my-network
+#      - train-ticket
 
   redis:
     image: redis
     ports:
       - 6379:6379
     networks:
-      - my-network
+      - train-ticket
 
   ts-ui-dashboard:
-    image: ${NAMESPACE}/ts-ui-dashboard:${TAG}
+    image: stream/ts-ui-dashboard:base
     restart: always
     ports:
       - 8080:8080
     networks:
-      - my-network
+      - train-ticket
 
   ts-auth-service:
-    image: ${NAMESPACE}/ts-auth-service:${TAG}
+    image: stream/ts-auth-service:base
     restart: always
     ports:
       - 12340:12340
     networks:
-      - my-network
+      - train-ticket
 
   ts-auth-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-user-service:
-    image: ${NAMESPACE}/ts-user-service:${TAG}
+    image: stream/ts-user-service:base
     restart: always
     ports:
       - 12342:12342
     networks:
-      - my-network
+      - train-ticket
 
   ts-user-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-verification-code-service:
-    image: ${NAMESPACE}/ts-verification-code-service:${TAG}
+    image: stream/ts-verification-code-service:base
     restart: always
     ports:
       - 15678:15678
     networks:
-      - my-network
+      - train-ticket
 
 
 #  ts-account-mongo:
 #    image: mongo
 #    networks:
-#      - my-network
+#      - train-ticket
 
   ts-route-service:
-    image: ${NAMESPACE}/ts-route-service:${TAG}
+    image: stream/ts-route-service:base
     restart: always
     ports:
          - 11178:11178
     networks:
-      - my-network
+      - train-ticket
 
   ts-route-mysql:
     image: mysql:5.7
     networks:
-        - my-network
+        - train-ticket
 
   ts-contacts-service:
-    image: ${NAMESPACE}/ts-contacts-service:${TAG}
+    image: stream/ts-contacts-service:base
     restart: always
     ports:
       - 12347:12347
     networks:
-      - my-network
+      - train-ticket
 
   ts-contacts-mysql:
       image: mysql:5.7
       networks:
-        - my-network
+        - train-ticket
 
   ts-order-service:
-    image: ${NAMESPACE}/ts-order-service:${TAG}
+    image: stream/ts-order-service:base
     restart: always
     ports:
       - 12031:12031
     networks:
-      - my-network
+      - train-ticket
 
   ts-order-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
 
   ts-order-other-service:
-    image: ${NAMESPACE}/ts-order-other-service:${TAG}
+    image: stream/ts-order-other-service:base
     restart: always
     ports:
       - 12032:12032
     networks:
-      - my-network
+      - train-ticket
 
   ts-order-other-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
 
   ts-config-service:
-    image: ${NAMESPACE}/ts-config-service:${TAG}
+    image: stream/ts-config-service:base
     restart: always
     ports:
       - 15679:15679
     networks:
-      - my-network
+      - train-ticket
 
   ts-config-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-station-service:
-    image: ${NAMESPACE}/ts-station-service:${TAG}
+    image: stream/ts-station-service:base
     restart: always
     ports:
       - 12345:12345
     networks:
-      - my-network
+      - train-ticket
 
   ts-station-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-train-service:
-    image: ${NAMESPACE}/ts-train-service:${TAG}
+    image: stream/ts-train-service:base
     restart: always
     ports:
       - 14567:14567
     networks:
-      - my-network
+      - train-ticket
 
   ts-train-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-travel-service:
-    image: ${NAMESPACE}/ts-travel-service:${TAG}
+    image: stream/ts-travel-service:base
     restart: always
     ports:
       - 12346:12346
     networks:
-      - my-network
+      - train-ticket
 
   ts-travel-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-travel2-service:
-      image: ${NAMESPACE}/ts-travel2-service:${TAG}
+      image: stream/ts-travel2-service:base
       restart: always
       ports:
         - 16346:16346
       networks:
-        - my-network
+        - train-ticket
 
   ts-travel2-mysql:
       image: mysql:5.7
       networks:
-        - my-network
+        - train-ticket
 
   ts-preserve-service:
-    image: ${NAMESPACE}/ts-preserve-service:${TAG}
+    image: stream/ts-preserve-service:base
     restart: always
     ports:
       - 14568:14568
     networks:
-      - my-network
+      - train-ticket
 
   ts-preserve-other-service:
-    image: ${NAMESPACE}/ts-preserve-other-service:${TAG}
+    image: stream/ts-preserve-other-service:base
     restart: always
     ports:
       - 14569:14569
     networks:
-      - my-network
+      - train-ticket
 
 
   ts-basic-service:
-      image: ${NAMESPACE}/ts-basic-service:${TAG}
+      image: stream/ts-basic-service:base
       restart: always
       ports:
         - 15680:15680
       networks:
-          - my-network
+          - train-ticket
 
 #  ts-ticketinfo-service:
-#        image: ${NAMESPACE}/ts-ticketinfo-service:${TAG}
+#        image: stream/ts-ticketinfo-service:base
 #        restart: always
 #        ports:
 #          - 15681:15681
 #        networks:
-#          - my-network
+#          - train-ticket
 
   ts-price-service:
-        image: ${NAMESPACE}/ts-price-service:${TAG}
+        image: stream/ts-price-service:base
         restart: always
         ports:
           - 16579:16579
         networks:
-          - my-network
+          - train-ticket
 
   ts-price-mysql:
         image: mysql:5.7
         networks:
-          - my-network
+          - train-ticket
 
   ts-notification-service:
-        image: ${NAMESPACE}/ts-notification-service:${TAG}
+        image: stream/ts-notification-service:base
         restart: always
         ports:
           - 17853:17853
         networks:
-          - my-network
+          - train-ticket
 
   ts-notification-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-security-service:
-        image: ${NAMESPACE}/ts-security-service:${TAG}
+        image: stream/ts-security-service:base
         restart: always
         ports:
           - 11188:11188
         networks:
-          - my-network
+          - train-ticket
 
   ts-security-mysql:
         image: mysql:5.7
         networks:
-          - my-network
+          - train-ticket
 
   ts-inside-payment-service:
-        image: ${NAMESPACE}/ts-inside-payment-service:${TAG}
+        image: stream/ts-inside-payment-service:base
         restart: always
         ports:
           - 18673:18673
         networks:
-          - my-network
+          - train-ticket
 
   ts-inside-payment-mysql:
         image: mysql:5.7
         networks:
-          - my-network
+          - train-ticket
 
   ts-execute-service:
-        image: ${NAMESPACE}/ts-execute-service:${TAG}
+        image: stream/ts-execute-service:base
         restart: always
         ports:
           - 12386:12386
         networks:
-          - my-network
+          - train-ticket
 
   ts-payment-service:
-        image: ${NAMESPACE}/ts-payment-service:${TAG}
+        image: stream/ts-payment-service:base
         restart: always
         ports:
           - 19001:19001
         networks:
-          - my-network
+          - train-ticket
 
   ts-payment-mysql:
         image: mysql:5.7
         networks:
-          - my-network
+          - train-ticket
 
   ts-rebook-service:
-        image: ${NAMESPACE}/ts-rebook-service:${TAG}
+        image: stream/ts-rebook-service:base
         restart: always
         ports:
           - 18886:18886
         networks:
-          - my-network
+          - train-ticket
 
   ts-rebook-mysql:
         image: mysql:5.7
         networks:
-          - my-network
+          - train-ticket
 
   ts-cancel-service:
-        image: ${NAMESPACE}/ts-cancel-service:${TAG}
+        image: stream/ts-cancel-service:base
         restart: always
         ports:
           - 18885:18885
         networks:
-          - my-network
+          - train-ticket
 
   ts-assurance-service:
-        image: ${NAMESPACE}/ts-assurance-service:${TAG}
+        image: stream/ts-assurance-service:base
         restart: always
         ports:
           - 18888:18888
         networks:
-          - my-network
+          - train-ticket
 
   ts-assurance-mysql:
         image: mysql:5.7
         networks:
-          - my-network
+          - train-ticket
 
   ts-seat-service:
-        image: ${NAMESPACE}/ts-seat-service:${TAG}
+        image: stream/ts-seat-service:base
         restart: always
         ports:
           - 18898:18898
         networks:
-          - my-network
+          - train-ticket
 
   ts-travel-plan-service:
-        image: ${NAMESPACE}/ts-travel-plan-service:${TAG}
+        image: stream/ts-travel-plan-service:base
         restart: always
         ports:
           - 14322:14322
         networks:
-          - my-network
+          - train-ticket
 
 #  ts-ticket-office-service:
-#        image: ${NAMESPACE}/ts-ticket-office-service:${TAG}
+#        image: stream/ts-ticket-office-service:base
 #        restart: always
 #        ports:
 #          - 16108:16108
 #        networks:
-#          - my-network
+#          - train-ticket
 #
 #  ts-ticket-office-mongo:
 #          image: mongo
 #          networks:
-#            - my-network
+#            - train-ticket
 
   ts-news-service:
-    image: ${NAMESPACE}/ts-news-service:${TAG}
+    image: stream/ts-news-service:base
     restart: always
     ports:
       - 12862:12862
     networks:
-      - my-network
+      - train-ticket
 
   ts-news-mysql:
         image: mysql:5.7
         networks:
-          - my-network
+          - train-ticket
 
   ts-voucher-mysql:
          image: mysql
@@ -388,10 +388,10 @@ services:
          environment:
            MYSQL_ROOT_PASSWORD: root
          networks:
-           - my-network
+           - train-ticket
 
   ts-voucher-service:
-          image: ${NAMESPACE}/ts-voucher-service:${TAG}
+          image: stream/ts-voucher-service:base
           restart: always
           ports:
             - 16101:16101
@@ -400,86 +400,86 @@ services:
           volumes:
             - /var/lib/mysql
           networks:
-            - my-network
+            - train-ticket
 
 #  ts-food-map-service:
-#        image: ${NAMESPACE}/ts-food-map-service:${TAG}
+#        image: stream/ts-food-map-service:base
 #        restart: always
 #        ports:
 #          - 18855:18855
 #        networks:
-#          - my-network
+#          - train-ticket
 #
 #  ts-food-map-mongo:
 #          image: mongo
 #          networks:
-#            - my-network
+#            - train-ticket
 
   ts-route-plan-service:
-          image: ${NAMESPACE}/ts-route-plan-service:${TAG}
+          image: stream/ts-route-plan-service:base
           restart: always
           ports:
             - 14578:14578
           networks:
-            - my-network
+            - train-ticket
 
   ts-food-service:
-    image: ${NAMESPACE}/ts-food-service:${TAG}
+    image: stream/ts-food-service:base
     restart: always
     ports:
       - 18856:18856
     networks:
-      - my-network
+      - train-ticket
 
   ts-consign-service:
-    image: ${NAMESPACE}/ts-consign-service:${TAG}
+    image: stream/ts-consign-service:base
     restart: always
     ports:
       - 16111:16111
     networks:
-      - my-network
+      - train-ticket
 
   ts-consign-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-consign-price-service:
-    image: ${NAMESPACE}/ts-consign-price-service:${TAG}
+    image: stream/ts-consign-price-service:base
     restart: always
     ports:
       - 16110:16110
     networks:
-      - my-network
+      - train-ticket
 
   ts-consign-price-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-food-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-admin-basic-info-service:
-    image: ${NAMESPACE}/ts-admin-basic-info-service:${TAG}
+    image: stream/ts-admin-basic-info-service:base
     restart: always
     ports:
       - 18767:18767
     networks:
-      - my-network
+      - train-ticket
 
   ts-admin-order-service:
-    image: ${NAMESPACE}/ts-admin-order-service:${TAG}
+    image: stream/ts-admin-order-service:base
     restart: always
     ports:
       - 16112:16112
     networks:
-      - my-network
+      - train-ticket
 
   ts-admin-route-service:
-    image: ${NAMESPACE}/ts-admin-route-service:${TAG}
+    image: stream/ts-admin-route-service:base
     restart: always
     ports:
       - 16113:16113
@@ -488,10 +488,10 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - my-network
+      - train-ticket
 
   ts-admin-travel-service:
-    image: ${NAMESPACE}/ts-admin-travel-service:${TAG}
+    image: stream/ts-admin-travel-service:base
     restart: always
     ports:
       - 16114:16114
@@ -500,10 +500,10 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - my-network
+      - train-ticket
 
   ts-admin-user-service:
-    image: ${NAMESPACE}/ts-admin-user-service:${TAG}
+    image: stream/ts-admin-user-service:base
     restart: always
     ports:
       - 16115:16115
@@ -512,86 +512,86 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - my-network
+      - train-ticket
 
   ts-avatar-service:
-    image: ${NAMESPACE}/ts-avatar-service:${TAG}
+    image: stream/ts-avatar-service:base
     restart: always
     ports:
       - 17001:17001
     networks:
-      - my-network
+      - train-ticket
 
   ts-delivery-service:
-    image: ${NAMESPACE}/ts-delivery-servicee:${TAG}
+    image: stream/ts-delivery-servicee:base
     restart: always
     ports:
       - 18808:18808
     networks:
-      - my-network
+      - train-ticket
 
   ts-delivery-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-food-delivery-service:
-    image: ${NAMESPACE}/ts-food-delivery-service:${TAG}
+    image: stream/ts-food-delivery-service:base
     restart: always
     ports:
       - 18957:18957
     networks:
-      - my-network
+      - train-ticket
 
   ts-food-delivery-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
   ts-gateway-service:
-    image: ${NAMESPACE}/ts-gateway-service:${TAG}
+    image: stream/ts-gateway-service:base
     restart: always
     ports:
       - 18888:18888
     networks:
-      - my-network
+      - train-ticket
 
   ts-gateway-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
 
   ts-station-food-service:
-    image: ${NAMESPACE}/ts-station-food-service:${TAG}
+    image: stream/ts-station-food-service:base
     restart: always
     ports:
       - 18855:18855
     networks:
-      - my-network
+      - train-ticket
 
   ts-station-food-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
 
   ts-train-food-service:
-    image: ${NAMESPACE}/ts-train-food-service:${TAG}
+    image: stream/ts-train-food-service:base
     restart: always
     ports:
       - 19999:19999
     networks:
-      - my-network
+      - train-ticket
 
   ts-train-food-mysql:
     image: mysql:5.7
     networks:
-      - my-network
+      - train-ticket
 
 
 networks:
-    my-network:
+    train-ticket:
       # driver: overlay
       driver: bridge
 
