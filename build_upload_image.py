@@ -1,26 +1,23 @@
 import os
+import sys
 
-PREFIX = "codewisdom"
-VERSION = "0.2.0"
+PREFIX = "stream" # 镜像名前缀
+VERSION = "skywalking" # 镜像版本号
 
 base_path = os.getcwd()
 build_paths = []
 
-
-def main():
-    if not mvn_build():
-        print("mvn build failed")
-    init_docker_build_paths()
-    # docker_login()
-    docker_build_and_push()
-
-
 def mvn_build():
+    """
+    1. maven 编译生成所有模块的 jar 包
+    """
     mvn_status = os.system("mvn clean package -DskipTests")
     return mvn_status == 0
 
-
 def init_docker_build_paths():
+    """
+    2. 获取各个模块的绝对路径
+    """
     list_paths = os.listdir(os.getcwd())
     for p in list_paths:
         if os.path.isdir(p):
@@ -28,37 +25,30 @@ def init_docker_build_paths():
                 build_path=base_path + "/" + p
                 build_paths.append(build_path)
 
-
-def docker_login():
-    username = os.getenv("DOCKER_USERNAME")
-    docker_hub_address = os.getenv("DOCKER_HUB_ADDRESS") or "registry.cn-hangzhou.aliyuncs.com"
-    print(f"[DOCKER HUB LOGIN] login username:{username} address:{docker_hub_address}")
-    print(f"[DOCKER HUB LOGIN] You should input your root password first and then dockerhub password")
-    docker_login = os.system(f"sudo docker login --username={username} {docker_hub_address}")
-    if not docker_login:
-        print("docker login failed")
-
-
 def docker_build_and_push():
+    """
+    3. 根据各模块目录下的 dockerfile 构建镜像
+    """
     for build_path in build_paths:
         image_name = build_path.split("/")[-1]
+        # 镜像名即模块目录名，如 ts-station-service
 
         os.chdir(build_path)
         files = os.listdir(build_path)
+        
+        # 逐个模块构建镜像
         if "Dockerfile" in files:
             docker_build = os.system(f"sudo docker build . -t {PREFIX}/{image_name}:{VERSION}")
+            # e.g. stream/ts-station-service:1.0
             if docker_build != 0:
-                print("[FAIL]" + image_name + " build failed.")
+                print(f"[FAIL] {image_name} build failed.")
             else:
-                print("[SUCCESS]" + image_name + " build success.")
-
-            docker_push = os.system(f"sudo docker push {PREFIX}/{image_name}:{VERSION}")
-            if docker_push != 0:
-                print("[FAIL]" + image_name + " push failed.")
-            else:
-                print("[SUCCESS]" + image_name + " push success.")
+                print(f"[SUCCESS] {image_name} build success.")
 
 
 if __name__ == '__main__':
-    main()
-
+    if not mvn_build():
+        print("mvn build failed")
+        exit(1)
+    init_docker_build_paths()
+    docker_build_and_push()
