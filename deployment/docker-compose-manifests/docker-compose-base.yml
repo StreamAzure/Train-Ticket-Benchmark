@@ -26,7 +26,7 @@ services:
 #      - train-ticket
 
   redis:
-    image: redis
+    image: redis:7.0.0
     ports:
       - 6379:6379
     networks:
@@ -34,7 +34,7 @@ services:
 
   ts-ui-dashboard:
     image: stream/ts-ui-dashboard:base
-    restart: always
+    
     ports:
       - 8080:8080
     networks:
@@ -42,7 +42,7 @@ services:
 
   ts-auth-service:
     image: stream/ts-auth-service:base
-    restart: always
+    
     ports:
       - 12340:12340
     networks:
@@ -50,12 +50,14 @@ services:
 
   ts-auth-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-user-service:
     image: stream/ts-user-service:base
-    restart: always
+    
     ports:
       - 12342:12342
     networks:
@@ -63,12 +65,14 @@ services:
 
   ts-user-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-verification-code-service:
     image: stream/ts-verification-code-service:base
-    restart: always
+    
     ports:
       - 15678:15678
     networks:
@@ -82,7 +86,7 @@ services:
 
   ts-route-service:
     image: stream/ts-route-service:base
-    restart: always
+    
     ports:
          - 11178:11178
     networks:
@@ -90,25 +94,29 @@ services:
 
   ts-route-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
         - train-ticket
 
   ts-contacts-service:
     image: stream/ts-contacts-service:base
-    restart: always
+    
     ports:
       - 12347:12347
     networks:
       - train-ticket
 
   ts-contacts-mysql:
-      image: mysql:5.7
-      networks:
-        - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-order-service:
     image: stream/ts-order-service:base
-    restart: always
+    
     ports:
       - 12031:12031
     networks:
@@ -116,13 +124,15 @@ services:
 
   ts-order-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
 
   ts-order-other-service:
     image: stream/ts-order-other-service:base
-    restart: always
+    
     ports:
       - 12032:12032
     networks:
@@ -130,13 +140,15 @@ services:
 
   ts-order-other-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
 
   ts-config-service:
     image: stream/ts-config-service:base
-    restart: always
+    
     ports:
       - 15679:15679
     networks:
@@ -144,12 +156,15 @@ services:
 
   ts-config-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
+    command: "--innodb_use_native_aio=0"
 
   ts-station-service:
     image: stream/ts-station-service:base
-    restart: always
+    
     ports:
       - 12345:12345
     networks:
@@ -157,12 +172,14 @@ services:
 
   ts-station-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-train-service:
     image: stream/ts-train-service:base
-    restart: always
+    
     ports:
       - 14567:14567
     networks:
@@ -170,12 +187,14 @@ services:
 
   ts-train-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-travel-service:
     image: stream/ts-travel-service:base
-    restart: always
+    
     ports:
       - 12346:12346
     networks:
@@ -183,25 +202,31 @@ services:
 
   ts-travel-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
+    command: "--innodb_use_native_aio=0"
 
   ts-travel2-service:
       image: stream/ts-travel2-service:base
-      restart: always
+      
       ports:
         - 16346:16346
       networks:
         - train-ticket
 
   ts-travel2-mysql:
-      image: mysql:5.7
-      networks:
-        - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
+    command: "--innodb_use_native_aio=0"
 
   ts-preserve-service:
     image: stream/ts-preserve-service:base
-    restart: always
+    
     ports:
       - 14568:14568
     networks:
@@ -209,7 +234,7 @@ services:
 
   ts-preserve-other-service:
     image: stream/ts-preserve-other-service:base
-    restart: always
+    
     ports:
       - 14569:14569
     networks:
@@ -218,7 +243,7 @@ services:
 
   ts-basic-service:
       image: stream/ts-basic-service:base
-      restart: always
+      
       ports:
         - 15680:15680
       networks:
@@ -226,7 +251,7 @@ services:
 
 #  ts-ticketinfo-service:
 #        image: stream/ts-ticketinfo-service:base
-#        restart: always
+#        
 #        ports:
 #          - 15681:15681
 #        networks:
@@ -234,20 +259,22 @@ services:
 
   ts-price-service:
         image: stream/ts-price-service:base
-        restart: always
+        
         ports:
           - 16579:16579
         networks:
           - train-ticket
 
   ts-price-mysql:
-        image: mysql:5.7
-        networks:
-          - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-notification-service:
         image: stream/ts-notification-service:base
-        restart: always
+        
         ports:
           - 17853:17853
         networks:
@@ -255,38 +282,44 @@ services:
 
   ts-notification-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-security-service:
         image: stream/ts-security-service:base
-        restart: always
+        
         ports:
           - 11188:11188
         networks:
           - train-ticket
 
   ts-security-mysql:
-        image: mysql:5.7
-        networks:
-          - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-inside-payment-service:
         image: stream/ts-inside-payment-service:base
-        restart: always
+        
         ports:
           - 18673:18673
         networks:
           - train-ticket
 
   ts-inside-payment-mysql:
-        image: mysql:5.7
-        networks:
-          - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-execute-service:
         image: stream/ts-execute-service:base
-        restart: always
+        
         ports:
           - 12386:12386
         networks:
@@ -294,70 +327,76 @@ services:
 
   ts-payment-service:
         image: stream/ts-payment-service:base
-        restart: always
+        
         ports:
           - 19001:19001
         networks:
           - train-ticket
 
   ts-payment-mysql:
-        image: mysql:5.7
-        networks:
-          - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-rebook-service:
         image: stream/ts-rebook-service:base
-        restart: always
+        
         ports:
           - 18886:18886
         networks:
           - train-ticket
 
   ts-rebook-mysql:
-        image: mysql:5.7
-        networks:
-          - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-cancel-service:
-        image: stream/ts-cancel-service:base
-        restart: always
-        ports:
-          - 18885:18885
-        networks:
-          - train-ticket
+    image: stream/ts-cancel-service:base
+    
+    ports:
+      - 18885:18885
+    networks:
+      - train-ticket
 
   ts-assurance-service:
-        image: stream/ts-assurance-service:base
-        restart: always
-        ports:
-          - 18888:18888
-        networks:
-          - train-ticket
+    image: stream/ts-assurance-service:base
+    
+    ports:
+      - 18888:18888
+    networks:
+      - train-ticket
 
   ts-assurance-mysql:
-        image: mysql:5.7
-        networks:
-          - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-seat-service:
-        image: stream/ts-seat-service:base
-        restart: always
-        ports:
-          - 18898:18898
-        networks:
-          - train-ticket
+    image: stream/ts-seat-service:base
+    
+    ports:
+      - 18898:18898
+    networks:
+      - train-ticket
 
   ts-travel-plan-service:
-        image: stream/ts-travel-plan-service:base
-        restart: always
-        ports:
-          - 14322:14322
-        networks:
-          - train-ticket
+    image: stream/ts-travel-plan-service:base
+    
+    ports:
+      - 14322:14322
+    networks:
+      - train-ticket
 
 #  ts-ticket-office-service:
 #        image: stream/ts-ticket-office-service:base
-#        restart: always
+#        
 #        ports:
 #          - 16108:16108
 #        networks:
@@ -370,41 +409,43 @@ services:
 
   ts-news-service:
     image: stream/ts-news-service:base
-    restart: always
+    
     ports:
       - 12862:12862
     networks:
       - train-ticket
 
   ts-news-mysql:
-        image: mysql:5.7
-        networks:
-          - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - train-ticket
 
   ts-voucher-mysql:
-         image: mysql
-         expose:
-            - "3306"
-         environment:
-           MYSQL_ROOT_PASSWORD: root
-         networks:
-           - train-ticket
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    expose:
+      - "3306"
+    networks:
+      - train-ticket
 
   ts-voucher-service:
-          image: stream/ts-voucher-service:base
-          restart: always
-          ports:
-            - 16101:16101
-          depends_on:
-            - ts-voucher-mysql
-          volumes:
-            - /var/lib/mysql
-          networks:
-            - train-ticket
+    image: stream/ts-voucher-service:base
+    
+    ports:
+      - 16101:16101
+    depends_on:
+      - ts-voucher-mysql
+    volumes:
+      - /var/lib/mysql
+    networks:
+      - train-ticket
 
 #  ts-food-map-service:
 #        image: stream/ts-food-map-service:base
-#        restart: always
+#        
 #        ports:
 #          - 18855:18855
 #        networks:
@@ -416,16 +457,16 @@ services:
 #            - train-ticket
 
   ts-route-plan-service:
-          image: stream/ts-route-plan-service:base
-          restart: always
-          ports:
-            - 14578:14578
-          networks:
-            - train-ticket
+    image: stream/ts-route-plan-service:base
+    
+    ports:
+      - 14578:14578
+    networks:
+      - train-ticket
 
   ts-food-service:
     image: stream/ts-food-service:base
-    restart: always
+    
     ports:
       - 18856:18856
     networks:
@@ -433,7 +474,7 @@ services:
 
   ts-consign-service:
     image: stream/ts-consign-service:base
-    restart: always
+    
     ports:
       - 16111:16111
     networks:
@@ -441,12 +482,14 @@ services:
 
   ts-consign-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-consign-price-service:
     image: stream/ts-consign-price-service:base
-    restart: always
+    
     ports:
       - 16110:16110
     networks:
@@ -454,17 +497,21 @@ services:
 
   ts-consign-price-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-food-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
   ts-admin-basic-info-service:
     image: stream/ts-admin-basic-info-service:base
-    restart: always
+    
     ports:
       - 18767:18767
     networks:
@@ -472,7 +519,7 @@ services:
 
   ts-admin-order-service:
     image: stream/ts-admin-order-service:base
-    restart: always
+    
     ports:
       - 16112:16112
     networks:
@@ -480,7 +527,7 @@ services:
 
   ts-admin-route-service:
     image: stream/ts-admin-route-service:base
-    restart: always
+    
     ports:
       - 16113:16113
     deploy:
@@ -492,7 +539,7 @@ services:
 
   ts-admin-travel-service:
     image: stream/ts-admin-travel-service:base
-    restart: always
+    
     ports:
       - 16114:16114
     deploy:
@@ -504,7 +551,7 @@ services:
 
   ts-admin-user-service:
     image: stream/ts-admin-user-service:base
-    restart: always
+    
     ports:
       - 16115:16115
     deploy:
@@ -516,15 +563,15 @@ services:
 
   ts-avatar-service:
     image: stream/ts-avatar-service:base
-    restart: always
+    
     ports:
       - 17001:17001
     networks:
       - train-ticket
 
   ts-delivery-service:
-    image: stream/ts-delivery-servicee:base
-    restart: always
+    image: stream/ts-delivery-service:base
+    
     ports:
       - 18808:18808
     networks:
@@ -532,12 +579,15 @@ services:
 
   ts-delivery-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
+    command: "--innodb_use_native_aio=0"
 
   ts-food-delivery-service:
     image: stream/ts-food-delivery-service:base
-    restart: always
+    
     ports:
       - 18957:18957
     networks:
@@ -545,12 +595,15 @@ services:
 
   ts-food-delivery-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
+    command: "--innodb_use_native_aio=0"
 
   ts-gateway-service:
     image: stream/ts-gateway-service:base
-    restart: always
+    
     ports:
       - 18888:18888
     networks:
@@ -558,13 +611,16 @@ services:
 
   ts-gateway-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
+    command: "--innodb_use_native_aio=0"
 
 
   ts-station-food-service:
     image: stream/ts-station-food-service:base
-    restart: always
+    
     ports:
       - 18855:18855
     networks:
@@ -572,13 +628,15 @@ services:
 
   ts-station-food-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
 
   ts-train-food-service:
     image: stream/ts-train-food-service:base
-    restart: always
+    
     ports:
       - 19999:19999
     networks:
@@ -586,6 +644,8 @@ services:
 
   ts-train-food-mysql:
     image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - train-ticket
 
