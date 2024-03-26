@@ -55,8 +55,8 @@ def docker_build_and_push():
         print("Build Failed: ", failed_images)
 
 if __name__ == '__main__':
-    # if not mvn_build():
-    #     print("mvn build failed")
-    #     exit(1)
+    if not mvn_build():
+        print("mvn build failed")
+        exit(1)
     init_docker_build_paths()
     docker_build_and_push()
