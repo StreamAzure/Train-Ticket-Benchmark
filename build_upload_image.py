@@ -2,7 +2,7 @@ import os
 import sys
 
 PREFIX = "stream" # 镜像名前缀
-VERSION = "skywalking" # 镜像版本号
+VERSION = "base" # 镜像版本号
 
 base_path = os.getcwd()
 build_paths = []
@@ -29,6 +29,8 @@ def docker_build_and_push():
     """
     3. 根据各模块目录下的 dockerfile 构建镜像
     """
+    total = len(build_paths)
+    failed_images = []
     for build_path in build_paths:
         image_name = build_path.split("/")[-1]
         # 镜像名即模块目录名，如 ts-station-service
@@ -38,17 +40,23 @@ def docker_build_and_push():
         
         # 逐个模块构建镜像
         if "Dockerfile" in files:
-            docker_build = os.system(f"sudo docker build . -t {PREFIX}/{image_name}:{VERSION}")
+            docker_build = os.system(f"docker build . -t {PREFIX}/{image_name}:{VERSION}")
             # e.g. stream/ts-station-service:1.0
             if docker_build != 0:
                 print(f"[FAIL] {image_name} build failed.")
+                failed_images += image_name
             else:
                 print(f"[SUCCESS] {image_name} build success.")
-
+            # [FAIL] ts-avatar-service build failed.
+    
+    print("All building done")
+    print(f"Total: {total}, Success: {total - len(failed_images)}, Failed: {len(failed_images)}")
+    if len(failed_images) > 0:
+        print("Build Failed: ", failed_images)
 
 if __name__ == '__main__':
-    if not mvn_build():
-        print("mvn build failed")
-        exit(1)
+    # if not mvn_build():
+    #     print("mvn build failed")
+    #     exit(1)
     init_docker_build_paths()
     docker_build_and_push()
