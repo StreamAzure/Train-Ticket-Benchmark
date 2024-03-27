@@ -34,4 +34,4 @@ python build_upload_image.py
     # 查看日志，确保ts-gateway-service完全启动并能提供服务后，再执行下一步
     docker-compose -f deployment/docker-compose-manifests/docker-compose-base-3.yml up -d
     ```
-    访问 http://localhost:8080/client_login.html，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
+    访问 [http://localhost:8080/client_login.html](http://localhost:8080/client_login.html)，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
