@@ -25,7 +25,7 @@ def init_docker_build_paths():
                 build_path=base_path + "/" + p
                 build_paths.append(build_path)
 
-def docker_build_and_push():
+def docker_build():
     """
     3. 根据各模块目录下的 dockerfile 构建镜像
     """
@@ -49,14 +49,14 @@ def docker_build_and_push():
                 print(f"[SUCCESS] {image_name} build success.")
             # [FAIL] ts-avatar-service build failed.
     
-    print("All building done")
+    print("\nAll building is done.")
     print(f"Total: {total}, Success: {total - len(failed_images)}, Failed: {len(failed_images)}")
     if len(failed_images) > 0:
-        print("Build Failed: ", failed_images)
+        print("Building Failed: ", failed_images)
 
 if __name__ == '__main__':
     if not mvn_build():
         print("mvn build failed")
         exit(1)
     init_docker_build_paths()
-    docker_build_and_push()
+    docker_build()
