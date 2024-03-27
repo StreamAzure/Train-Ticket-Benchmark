@@ -15,11 +15,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
+        server-addr: ${NACOS_ADDRS:nacos:8848}
   application:
     name: ts-preserve-other-service
   rabbitmq:
-    host: ${rabbitmq_host:localhost}
+    host: ${rabbitmq_host:rabbitmq}
     port: 5672
 
 swagger:
