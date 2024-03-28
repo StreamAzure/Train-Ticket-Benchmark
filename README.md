@@ -8,6 +8,10 @@ The project is a train ticket booking system based on microservice architecture 
 - Go - Webgo (ts-news-service)
 - DB - Mongo、MySQL
 
+## 全局配置
+- 各 MySQL 实例的 root 密码：root；MySQL中的所使用的数据库名均为 ts
+
+
 ## 更改
 - 更新 docker-compose 文件，使重构后的 TrainTicket 能以 Docker Compose 方式部署
 - 统一修改源码中各服务的nacos、数据库等配置，修复所有配置不当所导致的容器启动失败的bug
@@ -35,3 +39,9 @@ python build_upload_image.py
     docker-compose -f deployment/docker-compose-manifests/docker-compose-base-3.yml up -d
     ```
     访问 [http://localhost:8080/client_login.html](http://localhost:8080/client_login.html)，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
+
+## 自动请求脚本
+Clone 自 [train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
+
+已完成的更新：
+- 修正请求脚本中错误的key: `startingPlace` → `startPlace`。该错误会导致所有对路径/travelservice及/travelplan的Python请求失败
