@@ -7,10 +7,11 @@ highspeed_weights = {True: 60, False: 40}
 
 
 def query_and_cancel(q: Query):
-    if random_from_weighted(highspeed_weights):
-        pairs = q.query_orders(types=tuple([0, 1]))
-    else:
-        pairs = q.query_orders(types=tuple([0, 1]), query_other=True)
+    # if random_from_weighted(highspeed_weights):
+    #     pairs = q.query_orders(types=tuple([0, 1]))
+    # else:
+    #     pairs = q.query_orders(types=tuple([0, 1]), query_other=True)
+    pairs = q.query_orders(types=tuple([0, 1]), query_other=True)
 
     if not pairs:
         return
