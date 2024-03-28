@@ -201,7 +201,7 @@ services:
       - train-ticket
 
   ts-cancel-service:
-    image: stream/ts-cancel-service:skywalking
+    image: stream/ts-cancel-service:f1
 
     ports:
       - 18885:18885

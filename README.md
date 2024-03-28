@@ -8,6 +8,9 @@ The project is a train ticket booking system based on microservice architecture 
 - Go - Webgo (ts-news-service)
 - DB - Mongo、MySQL
 
+## F1-Injection
+本分支为 Train-Ticket F1 故障注入版本，所涉及的 ts-cancel-service 镜像名指定为 stream/ts-cancel-service:f1, docker-compose文件中已做相应修改
+
 ## 全局配置
 - 各 MySQL 实例的 root 密码：root；MySQL中的所使用的数据库名均为 ts
 
