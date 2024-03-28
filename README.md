@@ -30,15 +30,16 @@ python build_upload_image.py
 ```
 该脚本会自动执行 mvn 编译、jar打包及 docker 镜像构建，注意在其中指定镜像名前缀及版本号
 ### 通过 docker-compose 部署
-- Base 版，无链路追踪
+- SkyWalking 版，已整合 SkyWalking 链路追踪
     ```shell
-    docker-compose -f deployment/docker-compose-manifests/docker-compose-base-1.yml up -d
-    # 查看日志，确保MySQL容器及Nacos均完全启动并能提供服务后，再执行下一步
-    docker-compose -f deployment/docker-compose-manifests/docker-compose-base-2.yml up -d
+    docker-compose -f deployment/docker-compose-manifests/docker-compose-skywalking-1.yml up -d
+    # 查看日志，确保MySQL容器、Nacos、OAP-Server均完全启动并能提供服务后，再执行下一步
+    docker-compose -f deployment/docker-compose-manifests/docker-compose-skywalking-2.yml up -d
     # 查看日志，确保ts-gateway-service完全启动并能提供服务后（即日志输出 Started GatewayApplication in ** seconds），再执行下一步
-    docker-compose -f deployment/docker-compose-manifests/docker-compose-base-3.yml up -d
+    docker-compose -f deployment/docker-compose-manifests/docker-compose-skywalking-3.yml up -d
     ```
     访问 [http://localhost:8080/client_login.html](http://localhost:8080/client_login.html)，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
+    访问 SkyWalking UI：[http://localhost:8090/general](http://localhost:8090/general)
 
 ## 自动请求脚本
 Clone 自 [train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
