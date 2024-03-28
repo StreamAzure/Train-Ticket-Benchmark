@@ -40,6 +40,9 @@ python build_upload_image.py
     ```
     访问 [http://localhost:8080/client_login.html](http://localhost:8080/client_login.html)，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
 
+- SkyWalking 版，已在各个dockerfile中整合 SkyWalking 链路追踪
+    见分支 [SkyWalking](https://github.com/StreamAzure/Train-Ticket-Benchmark/tree/SkyWalking)
+
 ## 自动请求脚本
 Clone 自 [train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
 
