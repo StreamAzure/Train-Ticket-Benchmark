@@ -25,10 +25,14 @@ The project is a train ticket booking system based on microservice architecture 
 
 ## 运行
 ### 源码编译&镜像构建
-```shell
-python build_upload_image.py
-```
-该脚本会自动执行 mvn 编译、jar打包及 docker 镜像构建，注意在其中指定镜像名前缀及版本号
+
+1. 在 [SkyWalking Downloads](https://skywalking.apache.org/downloads/) 下载 apache-skywalking-java-agent-9.1.0.tgz，然后放到**每一个**以`ts-`开头的目录下，否则镜像构建失败
+2. 执行构建脚本：
+
+    ```shell
+    python build_upload_image.py
+    ```
+    该脚本会自动执行 mvn 编译、jar打包及 docker 镜像构建，注意在其中指定镜像名前缀及版本号
 ### 通过 docker-compose 部署
 - SkyWalking 版，已整合 SkyWalking 链路追踪
     ```shell

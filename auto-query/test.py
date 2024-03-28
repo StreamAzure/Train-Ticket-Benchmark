@@ -1,4 +1,5 @@
 import logging
+from time import sleep
 from queries import Query
 from scenarios import query_and_preserve
 
@@ -11,7 +12,10 @@ if not q.login():
 print("login success")
 
 # execute scenario on current user
-query_and_preserve(q)
-
-# or execute query directly
-# q.query_high_speed_ticket()
+while(True):
+    # query_and_preserve(q)
+    start = "Shang Hai"
+    end = "Nan Jing"
+    other_place_pair = (start, end)
+    trip_ids = q.query_normal_ticket(place_pair=other_place_pair)
+    sleep(1)
