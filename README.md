@@ -1,11 +1,11 @@
 
 # Train Ticket：A Benchmark Microservice System
 # <img src="./image/logo.png">
-The project is a train ticket booking system based on microservice architecture which contains 41 microservices. The programming languages and frameworks it used are as below.
+The project is a train ticket booking system based on microservice architecture which contains 45 microservices. The programming languages and frameworks it used are as below.
 - Java - Spring Boot, Spring Cloud
-- Node.js - Express
-- Python - Django
-- Go - Webgo
+- Node.js - Express (ts-ticket-office-service)
+- Python - Django (ts-voucher-service, ts-avatar-service)
+- Go - Webgo (ts-news-service)
 - DB - Mongo、MySQL
 
 ## 更改
