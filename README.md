@@ -38,8 +38,8 @@ python build_upload_image.py
     # 查看日志，确保ts-gateway-service完全启动并能提供服务后（即日志输出 Started GatewayApplication in ** seconds），再执行下一步
     docker-compose -f deployment/docker-compose-manifests/docker-compose-skywalking-3.yml up -d
     ```
-    访问 [http://localhost:8080/client_login.html](http://localhost:8080/client_login.html)，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
-    访问 SkyWalking UI：[http://localhost:8090/general](http://localhost:8090/general)
+    - 访问 [http://localhost:8080/client_login.html](http://localhost:8080/client_login.html)，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
+    - 访问 SkyWalking UI：[http://localhost:8090/general](http://localhost:8090/general)
 
 ## 自动请求脚本
 Clone 自 [train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
