@@ -74,7 +74,7 @@ def _query_high_speed_ticket(place_pair: tuple = ("Shang Hai", "Su Zhou"), heade
 
     payload = {
         "departureTime": time,
-        "startingPlace": place_pair[0],
+        "startPlace": place_pair[0],
         "endPlace": place_pair[1],
     }
 
@@ -103,7 +103,7 @@ def _query_normal_ticket(place_pair: tuple = ("Nan Jing", "Shang Hai"), headers:
 
     payload = {
         "departureTime": time,
-        "startingPlace": place_pair[0],
+        "startPlace": place_pair[0],
         "endPlace": place_pair[1],
     }
 
@@ -139,7 +139,7 @@ def _query_high_speed_ticket_parallel(place_pair: tuple = ("Shang Hai", "Su Zhou
 
     payload = {
         "departureTime": time,
-        "startingPlace": place_pair[0],
+        "startPlace": place_pair[0],
         "endPlace": place_pair[1],
     }
 
@@ -167,7 +167,7 @@ def _query_advanced_ticket(place_pair: tuple = ("Nan Jing", "Shang Hai"), header
 
     payload = {
         "departureTime": time,
-        "startingPlace": place_pair[0],
+        "startPlace": place_pair[0],
         "endPlace": place_pair[1],
     }
 
@@ -421,7 +421,7 @@ def _query_cheapest(date="2021-12-31", headers: dict = {}):
     payload = {
         "departureTime": date,
         "endPlace": "Shang Hai",
-        "startingPlace": "Nan Jing"
+        "startPlace": "Nan Jing"
     }
 
     r = requests.post(url=url, json=payload, headers=headers)
@@ -437,7 +437,7 @@ def _query_min_station(date="2021-12-31", headers: dict = {}):
     payload = {
         "departureTime": date,
         "endPlace": "Shang Hai",
-        "startingPlace": "Nan Jing"
+        "startPlace": "Nan Jing"
     }
 
     r = requests.post(url=url, json=payload, headers=headers)
@@ -453,7 +453,7 @@ def _query_quickest(date="2021-12-31", headers: dict = {}):
     payload = {
         "departureTime": date,
         "endPlace": "Shang Hai",
-        "startingPlace": "Nan Jing"
+        "startPlace": "Nan Jing"
     }
 
     r = requests.post(url=url, json=payload, headers=headers)

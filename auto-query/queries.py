@@ -86,11 +86,12 @@ class Query:
 
         payload = {
             "departureTime": time,
-            "startingPlace": place_pair[0],
+            "startPlace": place_pair[0],
             "endPlace": place_pair[1],
         }
 
         response = self.session.post(url=url, headers=headers, json=payload)
+        print(f"请求 url: {url}\nresponse: {response.text}")
 
         if response.status_code != 200 or response.json().get("data") is None:
             logger.warning(
@@ -119,12 +120,13 @@ class Query:
 
         payload = {
             "departureTime": time,
-            "startingPlace": place_pair[0],
+            "startPlace": place_pair[0],
             "endPlace": place_pair[1],
         }
 
         response = self.session.post(url=url, headers=headers, json=payload)
         print(f"请求 url: {url}\nresponse: {response.text}")
+        
 
         if response.status_code != 200 or response.json().get("data") is None:
             logger.warning(
@@ -161,7 +163,7 @@ class Query:
 
         payload = {
             "departureTime": time,
-            "startingPlace": place_pair[0],
+            "startPlace": place_pair[0],
             "endPlace": place_pair[1],
         }
 
@@ -200,7 +202,7 @@ class Query:
 
         payload = {
             "departureTime": date,
-            "startingPlace": place_pair[0],
+            "startPlace": place_pair[0],
             "endPlace": place_pair[1],
         }
 
