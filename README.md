@@ -1,12 +1,16 @@
 
 # Train Ticket：A Benchmark Microservice System
 # <img src="./image/logo.png">
-The project is a train ticket booking system based on microservice architecture which contains 41 microservices. The programming languages and frameworks it used are as below.
+The project is a train ticket booking system based on microservice architecture which contains 45 microservices. The programming languages and frameworks it used are as below.
 - Java - Spring Boot, Spring Cloud
-- Node.js - Express
-- Python - Django
-- Go - Webgo
+- Node.js - Express (ts-ticket-office-service)
+- Python - Django (ts-voucher-service, ts-avatar-service)
+- Go - Webgo (ts-news-service)
 - DB - Mongo、MySQL
+
+## 全局配置
+- 各 MySQL 实例的 root 密码：root；MySQL中的所使用的数据库名均为 ts
+
 
 ## 更改
 - 更新 docker-compose 文件，使重构后的 TrainTicket 能以 Docker Compose 方式部署
@@ -31,7 +35,13 @@ python build_upload_image.py
     docker-compose -f deployment/docker-compose-manifests/docker-compose-base-1.yml up -d
     # 查看日志，确保MySQL容器及Nacos均完全启动并能提供服务后，再执行下一步
     docker-compose -f deployment/docker-compose-manifests/docker-compose-base-2.yml up -d
-    # 查看日志，确保ts-gateway-service完全启动并能提供服务后，再执行下一步
+    # 查看日志，确保ts-gateway-service完全启动并能提供服务后（即日志输出 Started GatewayApplication in ** seconds），再执行下一步
     docker-compose -f deployment/docker-compose-manifests/docker-compose-base-3.yml up -d
     ```
     访问 [http://localhost:8080/client_login.html](http://localhost:8080/client_login.html)，若所有容器均正常运行且页面中验证码图片可以显示，则部署成功。
+
+## 自动请求脚本
+Clone 自 [train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
+
+已完成的更新：
+- 修正请求脚本中错误的key: `startingPlace` → `startPlace`。该错误会导致所有对路径/travelservice及/travelplan的Python请求失败
