@@ -1,5 +1,6 @@
 package cancel.service;
 
+import cancel.async.AsyncTask;
 import edu.fudan.common.entity.NotifyInfo;
 import edu.fudan.common.entity.OrderStatus;
 import edu.fudan.common.entity.Order;
@@ -22,6 +23,8 @@ import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @author fdse
@@ -33,6 +36,8 @@ public class CancelServiceImpl implements CancelService {
     private RestTemplate restTemplate;
     @Autowired
     private DiscoveryClient discoveryClient;
+    @Autowired
+    private AsyncTask asyncTask;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CancelServiceImpl.class);
 
@@ -46,9 +51,10 @@ public class CancelServiceImpl implements CancelService {
     public Response cancelOrder(String orderId, String loginId, HttpHeaders headers) {
 
         Response<Order> orderResult = getOrderByIdFromOrder(orderId, headers);
+        // stream: 1.GET other-service
         if (orderResult.getStatus() == 1) {
             CancelServiceImpl.LOGGER.info("[cancelOrder][Cancel Order, Order found G|H]");
-            Order order =  orderResult.getData();
+            Order order = orderResult.getData();
             if (order.getStatus() == OrderStatus.NOTPAID.getCode()
                     || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()) {
 
@@ -64,7 +70,6 @@ public class CancelServiceImpl implements CancelService {
                     boolean status = drawbackMoney(money, loginId, headers);
                     if (status) {
                         CancelServiceImpl.LOGGER.info("[cancelOrder][Draw Back Money Success]");
-
 
 
                         Response<User> result = getAccount(order.getAccountId().toString(), headers);
@@ -100,41 +105,95 @@ public class CancelServiceImpl implements CancelService {
                 return new Response<>(0, orderStatusCancelNotPermitted, null);
             }
         } else {
-
+            // stream: 2.GET order-other-service
             Response<Order> orderOtherResult = getOrderByIdFromOrderOther(orderId, headers);
             if (orderOtherResult.getStatus() == 1) {
                 CancelServiceImpl.LOGGER.info("[cancelOrder][Cancel Order, Order found Z|K|Other]");
 
-                Order order =   orderOtherResult.getData();
+                Order order = orderOtherResult.getData();
                 if (order.getStatus() == OrderStatus.NOTPAID.getCode()
                         || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()) {
 
                     CancelServiceImpl.LOGGER.info("[cancelOrder][Cancel Order, Order status ok]");
 
 //                    order.setStatus(OrderStatus.CANCEL.getCode());
-                    Response changeOrderResult = cancelFromOtherOrder(order, headers);
+//                    Response changeOrderResult = cancelFromOtherOrder(order, headers);
 
-                    if (changeOrderResult.getStatus() == 1) {
-                        CancelServiceImpl.LOGGER.info("[cancelOrder][Cancel Order Success]");
-                        //Draw back money
-                        String money = calculateRefund(order);
-                        boolean status = drawbackMoney(money, loginId, headers);
-                        if (status) {
-                            CancelServiceImpl.LOGGER.info("[cancelOrder][Draw Back Money Success]");
-                        } else {
-                            CancelServiceImpl.LOGGER.error("[cancelOrder][Draw Back Money Failed][loginId: {}, orderId: {}]", loginId, orderId);
-                        }
+                    /*********************** Fault Reproduction - Error Process Seq *************************/
+                    //1.return money
+                    // stream: 内有延时5s
+                    // stream: 3.GET order-other-service
+                    // stream: PUT order-other-service, 修改订单状态为 canceling
+                    // stream: GET inside-payment-service
+
+                    String money = calculateRefund(order);
+                    Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancel(headers, money, loginId, order.getId().toString());
+
+                    //2.change status to [canceled]
+                    // stream: 4.PUT order-other-service, 修改订单状态为 canceled
+                    Future<Response> taskCancelOrder = asyncTask.updateOtherOrderStatusToCancel(order, headers);
+
+                    while (!taskCancelOrder.isDone() || !taskDrawBackMoney.isDone()) {
+                    }
+
+                    Response cancelResponse;
+                    boolean drawBackMoneyStatus;
+
+                    try {
+                        drawBackMoneyStatus = taskDrawBackMoney.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        cancelResponse = taskCancelOrder.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("[Cancel Order Service][Cancel Order] Two Process Done");
+                    // stream: 5.GET order-other-service, 验证故障结果
+                    Response<Order> re = getOrderByIdFromOrderOther(orderId, headers);
+                    Order newOrder = re.getData();
+                    boolean status;
+                    if (newOrder.getStatus() != OrderStatus.CANCEL.getCode()) {
+                        System.out.println("订单状态不对");
+                        status = false;
+                    } else {
+                        System.out.println("订单状态正确");
+                        status = true;
+                    }
+                    if (status) {
+                        CancelServiceImpl.LOGGER.info("[Draw Back Money] Success.");
                         return new Response<>(1, "Success.", null);
                     } else {
-                        CancelServiceImpl.LOGGER.error("[cancelOrder][Cancel Order Failed][orderId: {}, Reason: {}]", orderId, changeOrderResult.getMsg());
-                        return new Response<>(0, "Fail.Reason:" + changeOrderResult.getMsg(), null);
+                        CancelServiceImpl.LOGGER.error("[Draw Back Money] Fail, loginId: {}, orderId: {}", loginId, orderId);
+                        return new Response<>(0, "Fail.Reason:" + re.getMsg(), null);
                     }
+
+//                    if (changeOrderResult.getStatus() == 1) {
+//                        CancelServiceImpl.LOGGER.info("[cancelOrder][Cancel Order Success]");
+//                        //Draw back money
+//                        String money = calculateRefund(order);
+//                        boolean status = drawbackMoney(money, loginId, headers);
+//                        if (status) {
+//                            CancelServiceImpl.LOGGER.info("[cancelOrder][Draw Back Money Success]");
+//                        } else {
+//                            CancelServiceImpl.LOGGER.error("[cancelOrder][Draw Back Money Failed][loginId: {}, orderId: {}]", loginId, orderId);
+//                        }
+//                        return new Response<>(1, "Success.", null);
+//                    } else {
+//                        CancelServiceImpl.LOGGER.error("[cancelOrder][Cancel Order Failed][orderId: {}, Reason: {}]", orderId, changeOrderResult.getMsg());
+//                        return new Response<>(0, "Fail.Reason:" + changeOrderResult.getMsg(), null);
+//                    }
+//                } else {
+//                    CancelServiceImpl.LOGGER.warn("[cancelOrder][Cancel Order, Order Status Not Permitted][loginId: {}, orderId: {}]", loginId, orderId);
+//                    return new Response<>(0, orderStatusCancelNotPermitted, null);
+//                }
                 } else {
-                    CancelServiceImpl.LOGGER.warn("[cancelOrder][Cancel Order, Order Status Not Permitted][loginId: {}, orderId: {}]", loginId, orderId);
-                    return new Response<>(0, orderStatusCancelNotPermitted, null);
+                    CancelServiceImpl.LOGGER.warn("[cancelOrder][Cancel Order, Order Not Found][loginId: {}, orderId: {}]", loginId, orderId);
+                    return new Response<>(0, "Order Not Found.", null);
                 }
-            } else {
-                CancelServiceImpl.LOGGER.warn("[cancelOrder][Cancel Order, Order Not Found][loginId: {}, orderId: {}]", loginId, orderId);
+            }else {
+                CancelServiceImpl.LOGGER.warn("[cancelOrder][Error! Cancel Order, Order Not Found][loginId: {}, orderId: {}]", loginId, orderId);
                 return new Response<>(0, "Order Not Found.", null);
             }
         }
@@ -196,6 +255,7 @@ public class CancelServiceImpl implements CancelService {
             }
         }
     }
+
 
     private String calculateRefund(Order order) {
         if (order.getStatus() == OrderStatus.NOTPAID.getCode()) {

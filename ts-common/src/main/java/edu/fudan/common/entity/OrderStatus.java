@@ -32,7 +32,12 @@ public enum OrderStatus {
     /**
      * used
      */
-    USED      (6,"Used");
+    USED      (6,"Used"),
+
+    /**
+     * canceling
+     */
+    CANCELING   (7, "Canceling");
 
     private int code;
     private String name;
