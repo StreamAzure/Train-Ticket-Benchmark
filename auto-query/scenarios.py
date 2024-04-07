@@ -21,6 +21,7 @@ def query_and_cancel(q: Query):
 
     order_id = q.cancel_order(order_id=pair[0])
     if not order_id:
+        print("no order to cancel")
         return
 
     logger.info(f"{order_id} queried and canceled")

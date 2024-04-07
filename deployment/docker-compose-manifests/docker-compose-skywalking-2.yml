@@ -201,7 +201,7 @@ services:
       - train-ticket
 
   ts-cancel-service:
-    image: stream/ts-cancel-service:f1
+    image: stream/ts-cancel-service:intercept
 
     ports:
       - 18885:18885

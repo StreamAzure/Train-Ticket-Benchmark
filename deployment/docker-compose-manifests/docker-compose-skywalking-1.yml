@@ -25,6 +25,18 @@ services:
 #    networks:
 #      - train-ticket
 
+  interceptor:
+    image: mitmproxy/mitmproxy:10.2.4
+    container_name: mitmproxy-interceptor
+    command: mitmweb -s /interceptor/demo.py --web-host 0.0.0.0
+    ports:
+      - "8900:8081" # 通过 localhost:8900 访问 mitmweb
+      - "8070:8080" # 监听端口，各微服务的代理服务器需设置为 interceptor:8080
+    volumes:
+      - C:\Me\Train-Ticket-Benchmark\http-interceptor:/interceptor
+    networks:
+      - train-ticket
+      
   nacos:
     image: nacos/nacos-server:2.0.1
     ports:
