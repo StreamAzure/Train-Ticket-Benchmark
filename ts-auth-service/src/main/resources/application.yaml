@@ -8,7 +8,7 @@ spring:
   application:
     name: ts-auth-service
   datasource:
-    url: jdbc:mysql://${AUTH_MYSQL_HOST:ts}:${AUTH_MYSQL_PORT:3306}/${AUTH_MYSQL_DATABASE:ts-auth-mysql}?useSSL=false
+    url: jdbc:mysql://${AUTH_MYSQL_HOST:ts}:${AUTH_MYSQL_PORT:3306}/${AUTH_MYSQL_DATABASE:auth}?useSSL=false
     username: ${AUTH_MYSQL_USER:root}
     password: ${AUTH_MYSQL_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver

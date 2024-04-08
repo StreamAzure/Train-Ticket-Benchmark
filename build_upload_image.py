@@ -36,12 +36,12 @@ def docker_build():
         # 镜像名即模块目录名，如 ts-station-service
 
         os.chdir(build_path)
-        # 将上级目录的 apache-skywalking-java-agent-9.2.0.tgz 拷贝到当前目录
-        os.system(f"cp ../apache-skywalking-java-agent-9.2.0.tgz {build_path}")
+        # 将上级目录的 apache-skywalking-java-agent-9.1.0.tgz 拷贝到当前目录
+        os.system(f"cp ../apache-skywalking-java-agent-9.1.0.tgz {build_path}")
 
         files = os.listdir(build_path)
         
-        # 逐个模块构建镜像
+        # # 逐个模块构建镜像
         if "Dockerfile" in files:
             docker_build = os.system(f"docker build . -t {PREFIX}/{image_name}:{VERSION}")
             # e.g. stream/ts-station-service:1.0
@@ -52,12 +52,16 @@ def docker_build():
                 print(f"[SUCCESS] {image_name} build success.")
             # [FAIL] ts-avatar-service build failed.
         # 删除当前目录下的 apache-skywalking-java-agent-9.2.0.tgz
-        os.system(f"rm {build_path}/apache-skywalking-java-agent-9.2.0.tgz")
     
     print("\nAll building is done.")
     print(f"Total: {total}, Success: {total - len(failed_images)}, Failed: {len(failed_images)}")
     if len(failed_images) > 0:
         print("Building Failed: ", failed_images)
+
+def after_clean():
+    for build_path in build_paths:
+        print(build_path)
+        os.system(f"rm {build_path}/apache-skywalking-java-agent-9.1.0.tgz")
 
 if __name__ == '__main__':
     if not mvn_build():
@@ -65,3 +69,4 @@ if __name__ == '__main__':
         exit(1)
     init_docker_build_paths()
     docker_build()
+    # after_clean()

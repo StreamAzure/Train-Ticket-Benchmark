@@ -6,7 +6,7 @@ spring:
   application:
     name: ts-consign-price-service
   datasource:
-    url: jdbc:mysql://${CONSIGN_PRICE_MYSQL_HOST:ts}:${CONSIGN_PRICE_MYSQL_PORT:3306}/${CONSIGN_PRICE_MYSQL_DATABASE:ts-consign-price-mysql}?useSSL=false
+    url: jdbc:mysql://${CONSIGN_PRICE_MYSQL_HOST:ts}:${CONSIGN_PRICE_MYSQL_PORT:3306}/${CONSIGN_PRICE_MYSQL_DATABASE:consignPrice}?useSSL=false
     username: ${CONSIGN_PRICE_MYSQL_USER:root}
     password: ${CONSIGN_PRICE_MYSQL_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver

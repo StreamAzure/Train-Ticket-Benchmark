@@ -6,7 +6,7 @@ spring:
   application:
     name: ts-price-service
   datasource:
-    url: jdbc:mysql://${PRICE_MYSQL_HOST:ts}:${PRICE_MYSQL_PORT:3306}/${PRICE_MYSQL_DATABASE:ts-price-mysql}?useSSL=false
+    url: jdbc:mysql://${PRICE_MYSQL_HOST:ts}:${PRICE_MYSQL_PORT:3306}/${PRICE_MYSQL_DATABASE:price}?useSSL=false
     username: ${PRICE_MYSQL_USER:root}
     password: ${PRICE_MYSQL_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
