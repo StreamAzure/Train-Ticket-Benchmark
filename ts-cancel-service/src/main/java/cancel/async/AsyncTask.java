@@ -32,6 +32,11 @@ public class AsyncTask {
     @Async("myAsync")
     public Future<Response> updateOtherOrderStatusToCancel(Order order, HttpHeaders headers){
         AsyncTask.LOGGER.info("[Change Order Status] Changing....");
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            throw new RuntimeException(e);
+        }
         order.setStatus(OrderStatus.CANCEL.getCode());
         HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
         HttpEntity requestEntity = new HttpEntity(order, newHeaders);
@@ -57,20 +62,23 @@ public class AsyncTask {
 
         /*********************** Fault Reproduction - Error Process Seq *************************/
         double op = new Random().nextDouble();
-//        if(op < 1.0){
-//            System.out.println("[Cancel Order Service] Delay Process，Wrong Cancel Process");
-//            Thread.sleep(8000);
-//        } else {
-//            System.out.println("[Cancel Order Service] Normal Process，Normal Cancel Process");
-//        }
+       if(op < 0.5){
+           System.out.println("[Cancel Order Service] Delay Process，Wrong Cancel Process");
+           try{
+                Thread.sleep(2000);
+           }catch (InterruptedException e){
+                throw new RuntimeException(e);
+           }
+       } else {
+           System.out.println("[Cancel Order Service] Normal Process，Normal Cancel Process");
+       }
 
-        AsyncTask.LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        // 一定在 cancel 之后执行
+        // AsyncTask.LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
+        // try {
+        //     Thread.sleep(5000);
+        // } catch (InterruptedException e) {
+        //     throw new RuntimeException(e);
+        // }
 
         //1.Search Order Info
         AsyncTask.LOGGER.info("[Cancel Order Service][Get Order] Getting....");

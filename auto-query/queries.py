@@ -125,9 +125,7 @@ class Query:
         }
 
         response = self.session.post(url=url, headers=headers, json=payload)
-        print(f"请求 url: {url}\nresponse: {response.text}")
-        
-
+       
         if response.status_code != 200 or response.json().get("data") is None:
             logger.warning(
                 f"request for {url} failed. response data is {response.text}")
@@ -579,6 +577,8 @@ class Query:
         res = self.session.post(url=PRESERVE_URL,
                                 headers=headers,
                                 json=base_preserve_payload)
+
+        print(base_preserve_payload)
 
         if res.status_code == 200 and res.json()["data"] == "Success":
             logger.info(f"preserve trip {trip_id} success")
