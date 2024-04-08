@@ -8,8 +8,11 @@ The project is a train ticket booking system based on microservice architecture 
 - Go - Webgo (ts-news-service)
 - DB - Mongo、MySQL
 
+## SkyWalking-One-Database
+本分支部署仅有一个MySQL实例 `ts`，各微服务在该MySQL中使用不同的database
+
 ## 全局配置
-- 各 MySQL 实例的 root 密码：root；MySQL中的所使用的数据库名均为 ts
+- MySQL 实例的 root 密码：root
 
 
 ## 更改

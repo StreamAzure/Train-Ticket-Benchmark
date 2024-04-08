@@ -1,48 +1,73 @@
 import os
 import re
 
-def find_dockerfiles_and_process(root_dir):
-    # 正则表达式匹配CMD指令和ENV指令
-    cmd_pattern = re.compile(r'CMD \["java", "-Xmx200m",  "-jar", "/app/([^"]+)-1.0.jar')
-    env_pattern = re.compile(r'^ENV SW_AGENT_NAME=')
-    cnt = 0
-    # 遍历当前目录及其子目录下的所有文件
-    for root, dirs, files in os.walk(root_dir):
+# 1. 查找子目录中的所有application.yml文件
+def find_yml_files(directory):
+    yml_files = []
+    for root, dirs, files in os.walk(directory):
         for file in files:
-            if file == 'Dockerfile':
-                # 构建完整的文件路径
-                dockerfile_path = os.path.join(root, file)
-                with open(dockerfile_path, encoding="gb18030") as df:
-                    dockerfile_content = df.read()
-                    
-                    # 查找并提取jar文件名
-                    cmd_match = cmd_pattern.search(dockerfile_content)
-                    if cmd_match:
-                        cnt += 1
-                        jar_filename = cmd_match.group(1)
-                        print(f'提取服务名: {jar_filename}')
-                        
-                        # 查找并修改ENV SW_AGENT_NAME指令
-                        lines = dockerfile_content.split('\n')
-                        modified = False
-                        for i, line in enumerate(lines):
-                            if env_pattern.match(line):
-                                # 追加文本到ENV指令
-                                line = line.split('=')
-                                line[1] = jar_filename
-                                line = line[0] + '=' + line[1]
-                                print(line)
-                                lines[i] = line
-                                modified = True
-                                break
-                        if modified:
-                            # 将修改后的内容写回Dockerfile
-                            with open(dockerfile_path,'w',encoding="gb18030") as df:
-                                df.write('\n'.join(lines))
-                            print(f'Modified ENV instruction in {dockerfile_path}')
-                        else:
-                            print(f'No ENV SW_AGENT_NAME instruction found in {dockerfile_path}')
-    print(f"共匹配 {cnt} 条")
-# 从当前目录开始搜索Dockerfile
-current_directory = os.getcwd()
-find_dockerfiles_and_process(current_directory)
+            if file == 'application.yml' or file == 'application.yaml':
+            # if file.endswith('.yml'):
+                yml_files.append(os.path.join(root, file))
+    return yml_files
+
+# 2. 识别文件中的jdbc语句部分，并提取其中的值
+def extract_jdbc_info(yml_file_path):
+    with open(yml_file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+    
+    # 使用正则表达式匹配jdbc语句
+    pattern = re.compile(r'url:\s?jdbc:mysql://\${[A-Z_\d]+_MYSQL_HOST:(ts)}:\${\w+:3306}/\${[A-Z_\d]+_MYSQL_DATABASE:([a-z-]+)}\?.*')
+    match = pattern.search(content)
+    
+    if match:
+        host_value = match.group(1)
+        db_value = match.group(2)
+        
+        return host_value, db_value
+    else:
+        return None, None
+
+# 3. 将两个值位置互换，并更新文件内容
+def swap_jdbc_values(yml_file_path, host_value, db_value):
+    with open(yml_file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+    
+    # 构建新的jdbc语句
+    pattern = re.compile(r'url:\s?jdbc:mysql://(\${[A-Z_\d]+_MYSQL_HOST):(ts-[a-z-\d]+-mysql}):(\${\w+:3306})/(\${[A-Z_\d]+_MYSQL_DATABASE):([a-z]+})\?(.*)')
+    match = pattern.search(content)
+    origin_str = match.group()
+    database_str = match.group(1)
+    db_value = match.group(2)
+    port_str = match.group(3)
+    host_str = match.group(4)
+    host_value = match.group(5)
+    other_str = match.group(6)
+
+    # print(f"{origin_str}")    
+    new_jdbc_statement = f'url: jdbc:mysql://{database_str}:{host_value}:{port_str}/{host_str}:{db_value}?{other_str}'
+    # print(new_jdbc_statement)   
+    # 替换原始jdbc语句    
+    new_content = re.sub(pattern, new_jdbc_statement, content)
+    # print(new_content)
+    # 将更新后的内容写回文件    
+    with open(yml_file_path, 'w', encoding='utf-8') as file:        
+        file.write(new_content)
+        
+# 主函数
+def main():    
+    directory = input("请输入要搜索的目录路径：")    
+    yml_files = find_yml_files(directory)
+    cnt = 0
+    dbs = []
+    for yml_file in yml_files:        
+        host, db = extract_jdbc_info(yml_file)
+        if(db != None):
+            dbs.append(db)         
+    with open('init.sql', 'w') as f:
+        for db in dbs:
+            f.write(f"CREATE DATABASE IF NOT EXISTS {db};\n")
+        
+            
+if __name__ == "__main__":    
+    main()

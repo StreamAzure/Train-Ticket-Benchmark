@@ -9,7 +9,7 @@ spring:
   application:
     name: ts-delivery-service
   datasource:
-    url: jdbc:mysql://${DELIVERY_MYSQL_HOST:ts-delivery-mysql}:${DELIVERY_MYSQL_PORT:3306}/${DELIVERY_MYSQL_DATABASE:ts}?useSSL=false
+    url: jdbc:mysql://${DELIVERY_MYSQL_HOST:ts}:${DELIVERY_MYSQL_PORT:3306}/${DELIVERY_MYSQL_DATABASE:ts-delivery-mysql}?useSSL=false
     username: ${DELIVERY_MYSQL_USER:root}
     password: ${DELIVERY_MYSQL_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver

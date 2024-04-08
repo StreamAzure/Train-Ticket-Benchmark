@@ -10,7 +10,7 @@ spring:
   application:
     name: ts-wait-order-service
   datasource:
-    url: jdbc:mysql://${WAIT_ORDER_MYSQL_HOST:ts-wait-order-mysql}:${WAIT_ORDER_MYSQL_PORT:3306}/${WAIT_ORDER_MYSQL_DATABASE:ts}?useSSL=false
+    url: jdbc:mysql://${WAIT_ORDER_MYSQL_HOST:ts}:${WAIT_ORDER_MYSQL_PORT:3306}/${WAIT_ORDER_MYSQL_DATABASE:ts-wait-order-mysql}?useSSL=false
     username: ${WAIT_ORDER_MYSQL_USER:root}
     password: ${WAIT_ORDER_MYSQL_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver

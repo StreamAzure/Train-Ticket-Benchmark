@@ -2,7 +2,7 @@ import os
 import sys
 
 PREFIX = "stream" # 镜像名前缀
-VERSION = "base" # 镜像版本号
+VERSION = "one-database" # 镜像版本号
 
 base_path = os.getcwd()
 build_paths = []
@@ -36,6 +36,9 @@ def docker_build():
         # 镜像名即模块目录名，如 ts-station-service
 
         os.chdir(build_path)
+        # 将上级目录的 apache-skywalking-java-agent-9.2.0.tgz 拷贝到当前目录
+        os.system(f"cp ../apache-skywalking-java-agent-9.2.0.tgz {build_path}")
+
         files = os.listdir(build_path)
         
         # 逐个模块构建镜像
@@ -48,6 +51,8 @@ def docker_build():
             else:
                 print(f"[SUCCESS] {image_name} build success.")
             # [FAIL] ts-avatar-service build failed.
+        # 删除当前目录下的 apache-skywalking-java-agent-9.2.0.tgz
+        os.system(f"rm {build_path}/apache-skywalking-java-agent-9.2.0.tgz")
     
     print("\nAll building is done.")
     print(f"Total: {total}, Success: {total - len(failed_images)}, Failed: {len(failed_images)}")

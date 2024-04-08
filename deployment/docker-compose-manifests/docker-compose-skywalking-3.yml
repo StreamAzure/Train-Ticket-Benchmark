@@ -1,7 +1,7 @@
 version: '3'
 services:
   ts-ui-dashboard:
-    image: stream/ts-ui-dashboard:skywalking
+    image: stream/ts-ui-dashboard:one-database
     ports:
       - 8080:8080
     networks:
