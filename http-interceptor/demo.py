@@ -24,6 +24,7 @@ class HTTPLogger:
         # 将日志条目转换为JSON字符串并写入日志文件
         self.logfile.write(json.dumps(log_entry))
         self.logfile.write("\n")
+        self.logfile.flush()
         # 更新报文ID计数器
         self.id += 1
     
