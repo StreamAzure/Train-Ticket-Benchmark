@@ -33,3 +33,5 @@ ENV/
 env.bak/
 venv.bak/
 apache-skywalking-java-agent-9.1.0.tgz
+ca.pem
+http-proxy-agent-1.3.5-dist.jar

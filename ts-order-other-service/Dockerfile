@@ -4,12 +4,14 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shang
 
 ADD ./target/ts-order-other-service-1.0.jar /app/
 ADD ./apache-skywalking-java-agent-9.1.0.tgz /app/
+ADD ./http-proxy-agent-1.3.5-dist.jar /app/
+ADD ./ca.pem /app/
 
 ENV SW_AGENT_NAME=ts-order-other-service
 ENV SW_AGENT_COLLECTOR_BACKEND_SERVICES=oap-server:11800
 # 捕获的数据库语句显示具体参数
 ENV SW_JDBC_TRACE_SQL_PARAMETERS=true
-ENV JAVA_TOOL_OPTIONS "-javaagent:/app/skywalking-agent/skywalking-agent.jar"
+ENV JAVA_TOOL_OPTIONS "-javaagent:/app/skywalking-agent/skywalking-agent.jar -javaagent:/app/http-proxy-agent-1.3.5-dist.jar='interceptor|8080|/app/ca.pem'"
 CMD ["java", "-Xmx200m",  "-jar", "/app/ts-order-other-service-1.0.jar"]
 #CMD java $JAVA_OPTIONS -jar /app/ts-order-other-service-1.0.jar
 EXPOSE 12032
