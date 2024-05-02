@@ -2,7 +2,7 @@ import os
 import sys
 
 PREFIX = "stream" # 镜像名前缀
-VERSION = "base" # 镜像版本号
+VERSION = "skywalking" # 镜像版本号
 
 base_path = os.getcwd()
 build_paths = []
@@ -37,16 +37,29 @@ def docker_build():
 
         os.chdir(build_path)
         files = os.listdir(build_path)
+
+        special_image = {
+            'ts-inside-payment-service':'intercept',
+            'ts-order-service': 'intercept',
+            'ts-order-other-service': 'intercept',
+            'ts-cancel-service': 'intercept'
+        }
         
         # 逐个模块构建镜像
         if "Dockerfile" in files:
-            docker_build = os.system(f"docker build . -t {PREFIX}/{image_name}:{VERSION}")
+            tag = ""
+            if image_name in special_image:
+                tag = f"{PREFIX}/{image_name}:{special_image[image_name]}"
+                docker_build = os.system(f"docker build . -t {tag}")
+            else:
+                tag = f"{PREFIX}/{image_name}:{VERSION}"
+                docker_build = os.system(f"docker build . -t {tag}")
             # e.g. stream/ts-station-service:1.0
             if docker_build != 0:
-                print(f"[FAIL] {image_name} build failed.")
+                print(f"[FAIL] {tag} build failed.")
                 failed_images += image_name
             else:
-                print(f"[SUCCESS] {image_name} build success.")
+                print(f"[SUCCESS] {tag} build success.")
             # [FAIL] ts-avatar-service build failed.
     
     print("\nAll building is done.")

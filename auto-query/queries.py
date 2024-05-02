@@ -580,7 +580,7 @@ class Query:
 
         print(base_preserve_payload)
 
-        if res.status_code == 200 and res.json()["data"] == "Success":
+        if res.status_code == 200 and "Success" in res.json()["data"]:
             logger.info(f"preserve trip {trip_id} success")
         else:
             logger.error(
