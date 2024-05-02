@@ -189,7 +189,7 @@ public class CancelServiceImpl implements CancelService {
 //                    return new Response<>(0, orderStatusCancelNotPermitted, null);
 //                }
                 } else {
-                    CancelServiceImpl.LOGGER.warn("[cancelOrder][Cancel Order, Order Not Found][loginId: {}, orderId: {}]", loginId, orderId);
+                    CancelServiceImpl.LOGGER.warn("[cancelOrder][Cancel Order, Invalid order status code][loginId: {}, orderId: {}, orderStatusCode: {}]", loginId, orderId, order.getStatus());
                     return new Response<>(0, "Order Not Found.", null);
                 }
             }else {

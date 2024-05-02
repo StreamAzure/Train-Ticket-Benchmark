@@ -30,6 +30,12 @@ public class InsidePaymentController {
 
     @PostMapping(value = "/inside_payment")
     public HttpEntity pay(@RequestBody PaymentInfo info, @RequestHeader HttpHeaders headers) {
+        try{
+            //模拟延迟
+            Thread.sleep(2000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         InsidePaymentController.LOGGER.info("[pay][Inside Payment Service.Pay][Pay for: {}]", info.getOrderId());
         return ok(service.pay(info, headers));
     }
