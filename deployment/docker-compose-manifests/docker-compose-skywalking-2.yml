@@ -169,7 +169,7 @@ services:
 
 
   ts-inside-payment-service:
-    image: stream/ts-inside-payment-service:f13
+    image: stream/ts-inside-payment-service:intercept
 
     ports:
       - 18673:18673
