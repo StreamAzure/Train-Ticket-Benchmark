@@ -1,0 +1,231 @@
+"testing..."
+"method match failed!"
+"req match failed"
+"method match failed!"
+"req match failed"
+"testing..."
+"method match failed!"
+"req match failed"
+"method match failed!"
+"req match failed"
+"testing..."
+"method match failed!"
+"req match failed"
+"method match failed!"
+"req match failed"
+"testing..."
+"match success!"
+{
+    "type": "write",
+    "url": "/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "cb5fa40f-7def-45d8-a5c5-eb29d42134bc",
+        "boughtDate": "2024-05-02 18:07:19",
+        "travelDate": "2024-05-02",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "876161173",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "350.0",
+        "differenceMoney": "0.0"
+    },
+    "method": "PUT"
+}
+{
+    "method": "PUT",
+    "url": "http://172.19.0.40:12032/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "6d6dab58-6f9d-460f-a9be-491ab7d7297f",
+        "boughtDate": "2024-05-04 23:06:27",
+        "travelDate": "2024-05-04",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 3,
+        "seatNumber": "813478916",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "122.49999999999999",
+        "differenceMoney": "0.0"
+    }
+}
+"match success!"
+{
+    "type": "write",
+    "url": "/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "cb5fa40f-7def-45d8-a5c5-eb29d42134bc",
+        "boughtDate": "2024-05-02 18:07:19",
+        "travelDate": "2024-05-02",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "876161173",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "350.0",
+        "differenceMoney": "0.0"
+    },
+    "method": "PUT"
+}
+{
+    "method": "PUT",
+    "url": "http://172.19.0.40:12032/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "6d6dab58-6f9d-460f-a9be-491ab7d7297f",
+        "boughtDate": "2024-05-04 23:06:27",
+        "travelDate": "2024-05-04",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 3,
+        "seatNumber": "813478916",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "122.49999999999999",
+        "differenceMoney": "0.0"
+    }
+}
+"request pair: 0 done"
+"testing..."
+"method match failed!"
+"req match failed"
+"method match failed!"
+"req match failed"
+"testing..."
+"match success!"
+{
+    "type": "read",
+    "url": "/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "cb5fa40f-7def-45d8-a5c5-eb29d42134bc",
+        "boughtDate": "2024-05-02 18:07:19",
+        "travelDate": "2024-05-02",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "876161173",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "350.0",
+        "differenceMoney": "0.0"
+    },
+    "method": "PUT"
+}
+{
+    "method": "PUT",
+    "url": "http://172.19.0.40:12032/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "6d6dab58-6f9d-460f-a9be-491ab7d7297f",
+        "boughtDate": "2024-05-04 23:06:27",
+        "travelDate": "2024-05-04",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 3,
+        "seatNumber": "813478916",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "122.49999999999999",
+        "differenceMoney": "0.0"
+    }
+}
+"match success!"
+{
+    "type": "write",
+    "url": "/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "cb5fa40f-7def-45d8-a5c5-eb29d42134bc",
+        "boughtDate": "2024-05-02 18:07:19",
+        "travelDate": "2024-05-02",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "876161173",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "350.0",
+        "differenceMoney": "0.0"
+    },
+    "method": "PUT"
+}
+{
+    "method": "PUT",
+    "url": "http://172.19.0.40:12032/api/v1/orderOtherService/orderOther",
+    "body": {
+        "id": "6d6dab58-6f9d-460f-a9be-491ab7d7297f",
+        "boughtDate": "2024-05-04 23:06:27",
+        "travelDate": "2024-05-04",
+        "travelTime": "2013-05-04 09:51:52",
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 3,
+        "seatNumber": "813478916",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "122.49999999999999",
+        "differenceMoney": "0.0"
+    }
+}
+"request pair: 1 done"
+"testing..."
+"method match failed!"
+"req match failed"
+"match success!"
+{
+    "type": "read",
+    "url": "/api/v1/orderOtherService/orderOther/?",
+    "body": "",
+    "method": "GET"
+}
+{
+    "method": "GET",
+    "url": "http://172.19.0.40:12032/api/v1/orderOtherService/orderOther/6d6dab58-6f9d-460f-a9be-491ab7d7297f",
+    "body": ""
+}

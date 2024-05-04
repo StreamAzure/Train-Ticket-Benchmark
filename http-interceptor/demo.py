@@ -28,7 +28,8 @@ class Filter:
 
     def _read_candidate_pairs(self, filename):
         with open(filename, 'r') as f:
-            data = json.load(f)
+            data = f.read()
+            data = json.loads(data)
         return data
 
     def log(self, message):
@@ -38,69 +39,55 @@ class Filter:
 
     def _get_target_reqs(self, pair):
         target_reqs = []
-        for req in pair:
-            parts = req.split()
-            if len(parts) > 1: 
-                method = parts[1]
-                path = parts[2]
-                body = parts[3] if len(parts) >= 4 else ""
-                target_reqs.append({
-                    "method": method,
-                    "path": path,
-                    "body": body 
-                })
-            else:
-                raise ValueError("Invalid request string format")
-
+        target_reqs.append(json.loads(pair[0]))
+        target_reqs.append(json.loads(pair[1]))
         return target_reqs
+    
+    def _match(self, req, url, method, body):
+        if match_request(req['url'], req['method'], req['body'], url, method, body):
+            request_json = {
+                "method": method,
+                "url": url,
+                "body": body,
+            }
+            self.log(req)
+            self.target_reqs.pop(0) # pair 中其中一个请求已到达
+            self.log(request_json)
+        else:
+            self.log("req match failed")
     
     def request(self, flow: http.HTTPFlow) -> None:
         timestamp = str(round(time.time() * 1000))
         flow.request.headers['X-Timestamp'] = timestamp
-        # ctx.log.info(target_reqs)
         if len(self.target_reqs) == 0 :
             return
-           
-        # 针对当前请求对进行拦截
-        for i, req in enumerate(self.target_reqs):
-            # 如果满足所有配对条件
-            # 拦截
-            if match_request(req['path'], req['method'], req['body'], flow.request.url, flow.request.method, flow.request.content):
-                request_json = {
-                    "method": flow.request.method,
-                    "url": flow.request.pretty_url,
-                    # "headers": dict(flow.request.headers),
-                    "body": json.loads(flow.request.content.decode('utf-8')) if flow.request.content and flow.request.headers.get("Content-Type") == "application/json" else flow.request.text,
-                }
-                self.log(req)
-                self.target_reqs.pop(i) # pair 中其中一个请求已到达
-                self.log(request_json)
+
+        self.log("testing...")
+
+        url = flow.request.url
+        method = flow.request.method
+        body = json.loads(flow.request.content.decode('utf-8')) if flow.request.content and flow.request.headers.get("Content-Type") == "application/json" else flow.request.text
         
-        self.log(f"request pair: {self.testing_id} done")
-        self.testing_id += 1
+        # 针对当前请求对进行拦截
+        if len(self.target_reqs) > 1:
+            req1 = self.target_reqs[0]
+            req2 = self.target_reqs[1]
+            self._match(req1, url, method, body)
+            self._match(req2, url, method, body)
+        else:
+            req = self.target_reqs[0]
+            self._match(req, url, method, body)
+            
+        if len(self.target_reqs) == 0: # 完成一个请求对的监听匹配
+            self.log(f"request pair: {self.testing_id} done") 
+            self.testing_id += 1
+
         if(self.testing_id >= len(self.candidate_pairs)):
             self.log(f"candidate_pairs test all done!")
             self.done()
         else:
             # 测试下一个请求对
             self.target_reqs = self._get_target_reqs(self.candidate_pairs[str(self.testing_id)])
-
-    # def response(self, flow: http.HTTPFlow) -> None:
-    #     timestamp = str(round(time.time() * 1000))
-    #     flow.response.headers['X-Timestamp'] = timestamp
-    #     try:
-    #         response_body = json.loads(flow.response.content.decode('utf-8'))
-    #     except json.JSONDecodeError:
-    #         response_body = flow.response.content.decode('utf-8', errors='ignore') if flow.response.content else None
-
-    #     # 记录响应信息
-    #     response_data = {
-    #         "type": "response",
-    #         "status_code": flow.response.status_code,
-    #         "headers": dict(flow.response.headers),
-    #         "body": response_body
-    #     }
-    #     self.log(response_data)
 
     def done(self):
         # 关闭日志文件
@@ -136,9 +123,9 @@ class HTTPLogger:
 
 normal_log = 'interceptor/log.json'
 intercept_log = 'interceptor/intercept_log.json'
-candidate_pair_file = 'interceptor/candidate_pairs.json'
+candidate_pair_file = 'interceptor/candidate-pairs.json'
 
 addons = [
-    HTTPLogger(normal_log),
+    # HTTPLogger(normal_log),
     Filter(intercept_log, candidate_pair_file),
 ]

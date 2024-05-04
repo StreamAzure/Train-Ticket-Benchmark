@@ -1,6 +1,8 @@
 import re
 from collections import Counter
 import difflib
+from mitmproxy import ctx
+import json
 
 def is_id_field(key):
     # 检查字段名是否包含 'id' 或类似的名称
@@ -21,23 +23,23 @@ def is_datetime_field(key, value):
 
     return is_datetime_value and is_datetime_key
 
-def calculate_match_rate(dict_str1, dict_str2):
-    def pre_process(dict_str1, dict_str2):
-        # 将字符串转换为字典
-        dict1 = eval(dict_str1)
-        dict2 = eval(dict_str2)
-
+def pre_process(body1, body2):
+    if isinstance(body1, dict) and isinstance(body2, dict):
         # 排除特定字段
-        filtered_dict1 = {k: v for k, v in dict1.items() if not is_id_field(k) and not is_datetime_field(k, v)}
-        filtered_dict2 = {k: v for k, v in dict2.items() if not is_id_field(k) and not is_datetime_field(k, v)}
+        filtered_dict1 = {k: v for k, v in body1.items() if not is_id_field(k) and not is_datetime_field(k, v)}
+        filtered_dict2 = {k: v for k, v in body2.items() if not is_id_field(k) and not is_datetime_field(k, v)}
 
         # 将过滤后的字典转换为字符串以进行匹配
         str1 = str(filtered_dict1)
         str2 = str(filtered_dict2)
+    else:
+        str1 = body1
+        str2 = body2
 
-        return str1, str2
-    
-    str1, str2 = pre_process(dict_str1, dict_str2)
+    return str1, str2
+
+def calculate_match_rate(body1, body2):
+    str1, str2 = pre_process(body1, body2)
     # 计算两个字符串的匹配率
     return difflib.SequenceMatcher(None, str1, str2).quick_ratio()
 
@@ -60,9 +62,27 @@ def _match_path(target_path, path) -> bool:
 def _match_method(target_method, method) -> bool:
     return method == target_method
 
-def match_request(target_path, target_method, target_body, now_path, now_method, now_body)-> bool:
+def log(logfile, message):
+    logfile.write(json.dumps(message, indent=4, default=str))
+    logfile.write("\n")
+    logfile.flush()
 
-    return _match_method(target_method, now_method) and _match_path(target_path, now_path) and _match_body(target_body, now_body)
+def match_request(target_path, target_method, target_body, now_path, now_method, now_body)-> bool:
+    logfile = open("interceptor/intercept_log.json", 'a')
+    method_res = _match_method(target_method, now_method)
+    if not method_res:
+        log(logfile, "method match failed!")
+        return False
+    path_res = _match_path(target_path, now_path)
+    if not path_res:
+        log(logfile, "path match failed!")
+        return False
+    body_res = _match_body(target_body, now_body)
+    if not body_res:
+        log(logfile, "body match failed!")
+        return False
+    log(logfile, "match success!")
+    return True
 
 if __name__ == "__main__":
     # 示例字典字符串
