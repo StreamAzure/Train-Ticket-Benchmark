@@ -28,7 +28,7 @@ class Filter:
 
     def _read_candidate_pairs(self, filename):
         with open(filename, 'r') as f:
-            data = json.load(f)
+            data = json.loads(f)
         return data
 
     def log(self, message):
@@ -38,20 +38,8 @@ class Filter:
 
     def _get_target_reqs(self, pair):
         target_reqs = []
-        for req in pair:
-            parts = req.split()
-            if len(parts) > 1: 
-                method = parts[1]
-                path = parts[2]
-                body = parts[3] if len(parts) >= 4 else ""
-                target_reqs.append({
-                    "method": method,
-                    "path": path,
-                    "body": body 
-                })
-            else:
-                raise ValueError("Invalid request string format")
-
+        target_reqs.append(json.loads(pair[0]))
+        target_reqs.append(json.loads(pair[1]))
         return target_reqs
     
     def request(self, flow: http.HTTPFlow) -> None:
@@ -65,12 +53,15 @@ class Filter:
         for i, req in enumerate(self.target_reqs):
             # 如果满足所有配对条件
             # 拦截
-            if match_request(req['path'], req['method'], req['body'], flow.request.url, flow.request.method, flow.request.content):
+            url = flow.request.url
+            method = flow.request.method
+            body = json.loads(flow.request.content.decode('utf-8')) if flow.request.content and flow.request.headers.get("Content-Type") == "application/json" else flow.request.text
+            if match_request(req['path'], req['method'], req['body'], url, method, body):
                 request_json = {
-                    "method": flow.request.method,
-                    "url": flow.request.pretty_url,
+                    "method": method,
+                    "url": url,
                     # "headers": dict(flow.request.headers),
-                    "body": json.loads(flow.request.content.decode('utf-8')) if flow.request.content and flow.request.headers.get("Content-Type") == "application/json" else flow.request.text,
+                    "body": body,
                 }
                 self.log(req)
                 self.target_reqs.pop(i) # pair 中其中一个请求已到达

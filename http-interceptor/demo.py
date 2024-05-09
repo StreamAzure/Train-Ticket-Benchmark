@@ -126,6 +126,6 @@ intercept_log = 'interceptor/intercept_log.json'
 candidate_pair_file = 'interceptor/candidate-pairs.json'
 
 addons = [
-    # HTTPLogger(normal_log),
+    HTTPLogger(normal_log),
     Filter(intercept_log, candidate_pair_file),
 ]
