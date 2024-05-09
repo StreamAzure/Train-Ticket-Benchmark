@@ -1,0 +1,421 @@
+version: '3'
+services:
+
+# inside-service 的 tag 为 no_error，此版本无延迟
+
+  ts-auth-service:
+    image: stream/ts-auth-service:skywalking
+
+    ports:
+      - 12340:12340
+    networks:
+      - train-ticket
+
+  ts-user-service:
+    image: stream/ts-user-service:skywalking
+
+    ports:
+      - 12342:12342
+    networks:
+      - train-ticket
+
+  ts-verification-code-service:
+    image: stream/ts-verification-code-service:skywalking
+
+    ports:
+      - 15678:15678
+    networks:
+      - train-ticket
+
+
+#  ts-account-mongo:
+#    image: mongo
+#    networks:
+#      - train-ticket
+
+  ts-route-service:
+    image: stream/ts-route-service:skywalking
+
+    ports:
+         - 11178:11178
+    networks:
+      - train-ticket
+
+  ts-contacts-service:
+    image: stream/ts-contacts-service:skywalking
+
+    ports:
+      - 12347:12347
+    networks:
+      - train-ticket
+
+  ts-order-service:
+    image: stream/ts-order-service:skywalking
+
+    ports:
+      - 12031:12031
+    networks:
+      - train-ticket
+
+
+
+  ts-order-other-service:
+    image: stream/ts-order-other-service:skywalking
+
+    ports:
+      - 12032:12032
+    networks:
+      - train-ticket
+
+
+  ts-config-service:
+    image: stream/ts-config-service:skywalking
+
+    ports:
+      - 15679:15679
+    networks:
+      - train-ticket
+
+
+  ts-station-service:
+    image: stream/ts-station-service:skywalking
+
+    ports:
+      - 12345:12345
+    networks:
+      - train-ticket
+
+
+  ts-train-service:
+    image: stream/ts-train-service:skywalking
+
+    ports:
+      - 14567:14567
+    networks:
+      - train-ticket
+
+
+  ts-travel-service:
+    image: stream/ts-travel-service:skywalking
+
+    ports:
+      - 12346:12346
+    networks:
+      - train-ticket
+
+
+  ts-travel2-service:
+    image: stream/ts-travel2-service:skywalking
+
+    ports:
+      - 16346:16346
+    networks:
+      - train-ticket
+
+
+  ts-preserve-service:
+    image: stream/ts-preserve-service:skywalking
+
+    ports:
+      - 14568:14568
+    networks:
+      - train-ticket
+
+  ts-preserve-other-service:
+    image: stream/ts-preserve-other-service:skywalking
+
+    ports:
+      - 14569:14569
+    networks:
+      - train-ticket
+
+
+  ts-basic-service:
+    image: stream/ts-basic-service:skywalking
+    ports:
+      - 15680:15680
+    networks:
+        - train-ticket
+
+#  ts-ticketinfo-service:
+#        image: stream/ts-ticketinfo-service:skywalking
+#        
+#        ports:
+#          - 15681:15681
+#        networks:
+#          - train-ticket
+
+  ts-price-service:
+    image: stream/ts-price-service:skywalking
+
+    ports:
+      - 16579:16579
+    networks:
+      - train-ticket
+
+  ts-notification-service:
+    image: stream/ts-notification-service:skywalking
+
+    ports:
+      - 17853:17853
+    networks:
+      - train-ticket
+
+  ts-security-service:
+    image: stream/ts-security-service:skywalking
+
+    ports:
+      - 11188:11188
+    networks:
+      - train-ticket
+
+
+  ts-inside-payment-service:
+    image: stream/ts-inside-payment-service:no_error
+
+    ports:
+      - 18673:18673
+    networks:
+      - train-ticket
+
+  ts-execute-service:
+    image: stream/ts-execute-service:skywalking
+
+    ports:
+      - 12386:12386
+    networks:
+      - train-ticket
+
+  ts-payment-service:
+    image: stream/ts-payment-service:skywalking
+
+    ports:
+      - 19001:19001
+    networks:
+      - train-ticket
+
+  ts-rebook-service:
+    image: stream/ts-rebook-service:skywalking
+
+    ports:
+      - 18886:18886
+    networks:
+      - train-ticket
+
+  ts-cancel-service:
+    image: stream/ts-cancel-service:skywalking
+
+    ports:
+      - 18885:18885
+    networks:
+      - train-ticket
+
+  ts-assurance-service:
+    image: stream/ts-assurance-service:skywalking
+
+    ports:
+      - 18890:18890
+    networks:
+      - train-ticket
+
+  ts-seat-service:
+    image: stream/ts-seat-service:skywalking
+
+    ports:
+      - 18898:18898
+    networks:
+      - train-ticket
+
+  ts-travel-plan-service:
+    image: stream/ts-travel-plan-service:skywalking
+
+    ports:
+      - 14322:14322
+    networks:
+      - train-ticket
+
+#  ts-ticket-office-service:
+#        image: stream/ts-ticket-office-service:skywalking
+#        
+#        ports:
+#          - 16108:16108
+#        networks:
+#          - train-ticket
+#
+#  ts-ticket-office-mongo:
+#          image: mongo
+#          networks:
+#            - train-ticket
+
+  ts-news-service:
+    image: stream/ts-news-service:skywalking
+
+    ports:
+      - 12862:12862
+    networks:
+      - train-ticket
+
+  ts-voucher-service:
+    image: stream/ts-voucher-service:skywalking
+    ports:
+      - 16101:16101
+    networks:
+      - train-ticket
+
+#  ts-food-map-service:
+#        image: stream/ts-food-map-service:skywalking
+#        
+#        ports:
+#          - 18855:18855
+#        networks:
+#          - train-ticket
+#
+#  ts-food-map-mongo:
+#          image: mongo
+#          networks:
+#            - train-ticket
+
+  ts-route-plan-service:
+    image: stream/ts-route-plan-service:skywalking
+
+    ports:
+      - 14578:14578
+    networks:
+      - train-ticket
+
+  ts-food-service:
+    image: stream/ts-food-service:skywalking
+
+    ports:
+      - 18856:18856
+    networks:
+      - train-ticket
+
+  ts-consign-service:
+    image: stream/ts-consign-service:skywalking
+
+    ports:
+      - 16111:16111
+    networks:
+      - train-ticket
+
+  ts-consign-price-service:
+    image: stream/ts-consign-price-service:skywalking
+
+    ports:
+      - 16110:16110
+    networks:
+      - train-ticket
+
+  ts-admin-basic-info-service:
+    image: stream/ts-admin-basic-info-service:skywalking
+
+    ports:
+      - 18767:18767
+    networks:
+      - train-ticket
+
+  ts-admin-order-service:
+    image: stream/ts-admin-order-service:skywalking
+
+    ports:
+      - 16112:16112
+    networks:
+      - train-ticket
+
+  ts-admin-route-service:
+    image: stream/ts-admin-route-service:skywalking
+
+    ports:
+      - 16113:16113
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - train-ticket
+
+  ts-admin-travel-service:
+    image: stream/ts-admin-travel-service:skywalking
+
+    ports:
+      - 16114:16114
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - train-ticket
+
+  ts-admin-user-service:
+    image: stream/ts-admin-user-service:skywalking
+
+    ports:
+      - 16115:16115
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - train-ticket
+
+  ts-avatar-service:
+    image: stream/ts-avatar-service:skywalking
+
+    ports:
+      - 17001:17001
+    networks:
+      - train-ticket
+
+  ts-delivery-service:
+    image: stream/ts-delivery-service:skywalking
+
+    ports:
+      - 18807:18807
+    networks:
+      - train-ticket
+
+  ts-food-delivery-service:
+    image: stream/ts-food-delivery-service:skywalking
+
+    ports:
+      - 18957:18957
+    networks:
+      - train-ticket
+
+  ts-gateway-service:
+    image: stream/ts-gateway-service:skywalking
+
+    ports:
+      - 18888:18888
+    networks:
+      - train-ticket
+
+  ts-station-food-service:
+    image: stream/ts-station-food-service:skywalking
+
+    ports:
+      - 18855:18855
+    networks:
+      - train-ticket
+
+  ts-train-food-service:
+    image: stream/ts-train-food-service:skywalking
+
+    ports:
+      - 19999:19999
+    networks:
+      - train-ticket
+
+  ts-wait-order-service:
+    image: stream/ts-wait-order-service:skywalking
+
+    ports:
+      - 17525:17525
+    networks:
+      - train-ticket
+
+networks:
+    train-ticket:
+      # driver: overlay
+      driver: bridge
