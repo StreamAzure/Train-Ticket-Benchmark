@@ -3,6 +3,7 @@ import sys
 
 PREFIX = "stream" # 镜像名前缀
 VERSION = "skywalking" # 镜像版本号
+# 05/09：已经是全部使用skywalking及mimtproxy的版本，其中f1和f13的故障注入已完成
 
 base_path = os.getcwd()
 build_paths = []
@@ -39,10 +40,10 @@ def docker_build():
         files = os.listdir(build_path)
 
         special_image = {
-            'ts-inside-payment-service':'intercept',
-            'ts-order-service': 'intercept',
-            'ts-order-other-service': 'intercept',
-            'ts-cancel-service': 'intercept'
+            # 'ts-inside-payment-service':'intercept',
+            # 'ts-order-service': 'intercept',
+            # 'ts-order-other-service': 'intercept',
+            # 'ts-cancel-service': 'intercept'
         }
         
         # 逐个模块构建镜像

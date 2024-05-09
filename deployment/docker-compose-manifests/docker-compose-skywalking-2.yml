@@ -48,7 +48,7 @@ services:
       - train-ticket
 
   ts-order-service:
-    image: stream/ts-order-service:intercept
+    image: stream/ts-order-service:skywalking
 
     ports:
       - 12031:12031
@@ -58,7 +58,7 @@ services:
 
 
   ts-order-other-service:
-    image: stream/ts-order-other-service:intercept
+    image: stream/ts-order-other-service:skywalking
 
     ports:
       - 12032:12032
@@ -169,7 +169,7 @@ services:
 
 
   ts-inside-payment-service:
-    image: stream/ts-inside-payment-service:intercept
+    image: stream/ts-inside-payment-service:skywalking
 
     ports:
       - 18673:18673
@@ -201,7 +201,7 @@ services:
       - train-ticket
 
   ts-cancel-service:
-    image: stream/ts-cancel-service:intercept
+    image: stream/ts-cancel-service:skywalking
 
     ports:
       - 18885:18885

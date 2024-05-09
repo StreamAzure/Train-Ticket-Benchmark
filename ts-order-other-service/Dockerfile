@@ -4,6 +4,8 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shang
 
 ADD ./target/ts-order-other-service-1.0.jar /app/
 ADD ./apache-skywalking-java-agent-9.1.0.tgz /app/
+ADD ./ca.pem /app/
+ADD ./http-proxy-agent-1.3.5-dist.jar /app/
 ADD ./http-proxy-agent-1.3.5-dist.jar /app/
 ADD ./ca.pem /app/
 
