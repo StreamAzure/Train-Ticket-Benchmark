@@ -17,7 +17,6 @@ headers = {
             'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
             'Connection': 'keep-alive',
         }
-TRIP_ID = 'D1345'
 
 place_pair = ("Shang Hai", "Su Zhou")
 
@@ -66,7 +65,7 @@ async def query_tickets():
             else:
                 raise Exception(f"查询请求失败，状态码：{response.status}")
                 
-async def preserve_ticket():
+async def preserve_ticket(trip_id, contact_id):
     global uid, headers, address, token
     # =================== 高铁车票预订 =====================
     async with aiohttp.ClientSession() as session:
@@ -74,11 +73,11 @@ async def preserve_ticket():
         preserve_payload = {
             "accountId": uid,
             "assurance": "0",
-            "contactsId": "a9e04726-d5b0-4e7d-a0da-1a843c6ca25b",
+            "contactsId": contact_id,
             "date": datestr,
             "from": place_pair[0],
             "to": place_pair[1],
-            "tripId": TRIP_ID,
+            "tripId": trip_id,
             "foodType": "0",
             "seatType": 2
         }
@@ -91,13 +90,13 @@ async def preserve_ticket():
             else:
                 raise Exception(f"预订请求失败，状态码：{response.status}")
             
-async def pay_ticket(order_id: str):
+async def pay_ticket(order_id: str, trip_id):
     global uid, headers, address, token
     async with aiohttp.ClientSession() as session:
         pay_url = f"{address}/api/v1/inside_pay_service/inside_payment"
         pay_paytload = {
             "orderId": order_id,
-            "tripId": TRIP_ID
+            "tripId": trip_id
         }
 
         async with session.post(pay_url, timeout=5, headers=headers, json=pay_paytload) as response:
@@ -119,17 +118,24 @@ async def cancel_ticket(order_id:str):
                 raise Exception(f"车票取消失败，状态码：{response.status}")
 
 async def main():
-    task1 = asyncio.ensure_future(preserve_ticket())
+
+    trip_id = 'D1345'
+    contact_id = "5b91d286-6b23-48fe-8e3c-a4fe815a74ed" 
+
+    task1 = asyncio.ensure_future(preserve_ticket(trip_id, contact_id))
     task2 = asyncio.ensure_future(query_tickets())
 
     _, res2 = await asyncio.gather(task2,task1)
     order_id = res2["data"]
     print(f"order_id: {order_id}")
-    task3 = asyncio.ensure_future(pay_ticket(order_id))
-    task4 = asyncio.ensure_future(cancel_ticket(order_id))
-    res3, res4 = await asyncio.gather(task3, task4)
-    print(res3)
-    print(res4)
+    if order_id != None:
+        task3 = asyncio.ensure_future(pay_ticket(order_id, trip_id))
+        task4 = asyncio.ensure_future(cancel_ticket(order_id))
+        res3, res4 = await asyncio.gather(task3, task4)
+        print(res3)
+        print(res4)
+    else:
+        print("preserve order failed!")
 
 login()
 loop = asyncio.get_event_loop()

@@ -20,5 +20,7 @@ print("login success")
 #     trip_ids = q.query_normal_ticket(place_pair=other_place_pair)
 #     sleep(1)
 
-while True:
-    query_and_cancel(q)
+query_and_preserve(q)
+    # query_and_pay(q)
+# query_and_cancel(q)
+# print("done")
