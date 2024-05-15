@@ -33,7 +33,7 @@ services:
       - "8900:8081" # 通过 localhost:8900 访问 mitmweb
       - "8070:8080" # 监听端口，各微服务的代理服务器需设置为 interceptor:8080
     volumes:
-      - C:\Me\Train-Ticket-Benchmark\http-interceptor:/interceptor
+      - /home/stream/Research/Train-Ticket-Benchmark/http-interceptor:/interceptor
     networks:
       - train-ticket
       
@@ -46,6 +46,45 @@ services:
       - MODE=standalone
     networks:
       - train-ticket
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - http.port=9200
+      - http.cors.enabled=true
+      - http.cors.allow-origin="*"
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=false
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      - TZ=Asia/Shanghai    
+      - xpack.security.enabled=false
+    volumes:      
+      - /home/stream/Research/Train-Ticket-Benchmark/es/plugins:/usr/share/elasticsearch/plugins
+      - /home/stream/Research/Train-Ticket-Benchmark/es/data:/usr/share/elasticsearch/data
+    ports:      
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - train-ticket
+
+  kibana:    # 适用于 Elasticsearch 的源可用数据可视化仪表板软件
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    container_name: kibana
+    depends_on:      
+      - elasticsearch  
+    environment:      
+      - elasticsearch.hosts=http://elasticsearch:9200
+      - TZ=Asia/Shanghai    
+    ports:      
+      - 5601:5601
+    volumes:
+      - /home/stream/Research/Train-Ticket-Benchmark/kibana/data:/usr/share/kibana/data
+      # 这个data目录需要在宿主机 sudo chmod 775，否则容器内部会报无权限读写
+    networks:
+      - train-ticket
 
   oap-server:
     image: apache/skywalking-oap-server:9.2.0
@@ -53,6 +92,11 @@ services:
     restart: always
     networks:
       - train-ticket
+    environment:
+      - TZ=Asia/Shanghai
+      - SW_STORAGE=elasticsearch
+      - SW_STORAGE_ES_CLUSTER_NODES=elasticsearch:9200
+      - SW_HEALTH_CHECKER=default
 
   oap-ui:
     image: apache/skywalking-ui:9.2.0
