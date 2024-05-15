@@ -1,5 +1,5 @@
 from atomic_queries import _query_orders, _collect_one_order, _login, _rebook_ticket
-from utils import random_form_list
+from utils import random_from_list
 import time
 
 base_address = "http://10.176.122.1:32677"
@@ -16,7 +16,7 @@ def query_and_rebook(headers):
     # pairs = pairs + pairs2
 
     # (orderId, tripId)
-    # pair = random_form_list(pairs)
+    # pair = random_from_list(pairs)
     new_trip_id = "D1345"
     new_date = time.strftime("%Y-%m-%d", time.localtime())
     new_seat_type = "3"

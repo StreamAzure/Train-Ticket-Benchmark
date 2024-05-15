@@ -1,5 +1,5 @@
 from atomic_queries import _query_orders, _collect_one_order
-from utils import random_form_list
+from utils import random_from_list
 
 
 def query_and_collect_ticket(headers):
@@ -13,7 +13,7 @@ def query_and_collect_ticket(headers):
     pairs = pairs + pairs2
 
     # (orderId, tripId)
-    pair = random_form_list(pairs)
+    pair = random_from_list(pairs)
 
     order_id = _collect_one_order(order_id=pair[0], headers=headers)
     if not order_id:

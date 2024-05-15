@@ -82,7 +82,7 @@ def _query_high_speed_ticket(place_pair: tuple = ("Shang Hai", "Su Zhou"), heade
                              headers=headers,
                              json=payload)
 
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"request for {url} failed. response data is {response.text}")
         return None
 
@@ -110,7 +110,7 @@ def _query_normal_ticket(place_pair: tuple = ("Nan Jing", "Shang Hai"), headers:
     response = requests.post(url=url,
                              headers=headers,
                              json=payload)
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"request for {url} failed. response data is {response.json()}")
         return None
 
@@ -147,7 +147,7 @@ def _query_high_speed_ticket_parallel(place_pair: tuple = ("Shang Hai", "Su Zhou
                              headers=headers,
                              json=payload)
 
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"request for {url} failed. response data is {response.text}")
         return None
 
@@ -177,7 +177,7 @@ def _query_advanced_ticket(place_pair: tuple = ("Nan Jing", "Shang Hai"), header
                              headers=headers,
                              json=payload)
     # print(response.text)
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"request for {url} failed. response data is {response.json()}")
         return None
 
@@ -193,7 +193,7 @@ def _query_advanced_ticket(place_pair: tuple = ("Nan Jing", "Shang Hai"), header
 def _query_assurances(headers: dict = {}):
     url = f"{base_address}/api/v1/assuranceservice/assurances/types"
     response = requests.get(url=url, headers=headers)
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"query assurance failed, response data is {response.json()}")
         return None
     data = response.json().get("data")
@@ -206,7 +206,7 @@ def _query_food(place_pair: tuple = ("Shang Hai", "Su Zhou"), train_num: str = "
     url = f"{base_address}/api/v1/foodservice/foods/2021-07-14/{place_pair[0]}/{place_pair[1]}/{train_num}"
 
     response = requests.get(url=url, headers=headers)
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"query food failed, response data is {response}")
         return None
     data = response.json().get("data")
@@ -231,7 +231,7 @@ def _query_contacts(headers: dict = {}) -> List[str]:
     url = f"{base_address}/api/v1/contactservice/contacts/account/{uuid}"
 
     response = requests.get(url=url, headers=headers)
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"query contacts failed, response data is {response.json()}")
         return None
 
@@ -262,7 +262,7 @@ def _query_orders(headers: dict = {}, types: tuple = tuple([0]), query_other: bo
     }
 
     response = requests.post(url=url, headers=headers, json=payload)
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"query orders failed, response data is {response.text}")
         return None
 
@@ -298,7 +298,7 @@ def _query_orders_all_info(headers: dict = {}, query_other: bool = False) -> Lis
     }
 
     response = requests.post(url=url, headers=headers, json=payload)
-    if response.status_code is not 200 or response.json().get("data") is None:
+    if response.status_code != 200 or response.json().get("data") is None:
         logger.warning(f"query orders failed, response data is {response.text}")
         return None
 

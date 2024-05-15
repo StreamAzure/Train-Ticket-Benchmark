@@ -1,7 +1,7 @@
 import time
 
 from atomic_queries import _query_orders_all_info, _put_consign
-from utils import random_form_list
+from utils import random_from_list
 
 
 def query_one_and_put_consign(headers, pairs):
@@ -12,7 +12,7 @@ def query_one_and_put_consign(headers, pairs):
     :return:
     """
 
-    pair = random_form_list(pairs)
+    pair = random_from_list(pairs)
 
     order_id = _put_consign(result=pair, headers=headers)
     if not order_id:

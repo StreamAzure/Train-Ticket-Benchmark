@@ -1,7 +1,7 @@
 import time
 
 from atomic_queries import _query_orders, _pay_one_order
-from utils import random_form_list
+from utils import random_from_list
 
 
 def query_order_and_pay(headers, pairs):
@@ -11,7 +11,7 @@ def query_order_and_pay(headers, pairs):
     """
 
     # (orderId, tripId) pair
-    pair = random_form_list(pairs)
+    pair = random_from_list(pairs)
 
     order_id = _pay_one_order(pair[0], pair[1], headers=headers)
     if not order_id:
