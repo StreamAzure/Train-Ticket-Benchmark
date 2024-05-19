@@ -65,7 +65,7 @@ def insert_text_after_line(root_dir, search_line, new_texts):
                         df.writelines(dockerfile_content)
 
 # 调用函数，传入Dockerfile的路径，要搜索的行文本，以及要插入的新行文本
-search_text = 'ADD ./apache-skywalking-java-agent-9.1.0.tgz /app/'
+search_text = 'ADD ./apache-skywalking-java-agent-9.2.0.tgz /app/'
 new_texts = [
     'ADD ./http-proxy-agent-1.3.5-dist.jar /app/',
     'ADD ./ca.pem /app/'

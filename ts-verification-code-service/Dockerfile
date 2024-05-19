@@ -3,7 +3,7 @@ FROM openjdk:8-jre
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
 ADD ./target/ts-verification-code-service-1.0.jar /app/
-ADD ./apache-skywalking-java-agent-9.1.0.tgz /app/
+ADD ./apache-skywalking-java-agent-9.2.0.tgz /app/
 ADD ./ca.pem /app/
 ADD ./http-proxy-agent-1.3.5-dist.jar /app/
 

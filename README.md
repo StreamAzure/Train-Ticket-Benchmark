@@ -29,7 +29,7 @@ The project is a train ticket booking system based on microservice architecture 
 ## 运行
 ### 源码编译&镜像构建
 
-1. 在 [SkyWalking Downloads](https://skywalking.apache.org/downloads/) 下载 apache-skywalking-java-agent-9.1.0.tgz，然后放到**每一个**以`ts-`开头的目录下，否则镜像构建失败
+1. 在 [SkyWalking Downloads](https://skywalking.apache.org/downloads/) 下载 apache-skywalking-java-agent-9.2.0.tgz，然后放到**每一个**以`ts-`开头的目录下，否则镜像构建失败
 2. 执行构建脚本：
 
     ```shell
