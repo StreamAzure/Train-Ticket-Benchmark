@@ -1,10 +1,8 @@
 version: '3'
 services:
 
-# inside-service 的 tag 为 no_error，此版本无延迟
-
   ts-auth-service:
-    image: stream/ts-auth-service:skywalking
+    image: stream/ts-auth-service:skywalking-9.2.0
 
     ports:
       - 12340:12340
@@ -12,7 +10,7 @@ services:
       - train-ticket
 
   ts-user-service:
-    image: stream/ts-user-service:skywalking
+    image: stream/ts-user-service:skywalking-9.2.0
 
     ports:
       - 12342:12342
@@ -20,7 +18,7 @@ services:
       - train-ticket
 
   ts-verification-code-service:
-    image: stream/ts-verification-code-service:skywalking
+    image: stream/ts-verification-code-service:skywalking-9.2.0
 
     ports:
       - 15678:15678
@@ -34,7 +32,7 @@ services:
 #      - train-ticket
 
   ts-route-service:
-    image: stream/ts-route-service:skywalking
+    image: stream/ts-route-service:skywalking-9.2.0
 
     ports:
          - 11178:11178
@@ -42,7 +40,7 @@ services:
       - train-ticket
 
   ts-contacts-service:
-    image: stream/ts-contacts-service:skywalking
+    image: stream/ts-contacts-service:skywalking-9.2.0
 
     ports:
       - 12347:12347
@@ -50,7 +48,7 @@ services:
       - train-ticket
 
   ts-order-service:
-    image: stream/ts-order-service:skywalking
+    image: stream/ts-order-service:skywalking-9.2.0
 
     ports:
       - 12031:12031
@@ -60,7 +58,7 @@ services:
 
 
   ts-order-other-service:
-    image: stream/ts-order-other-service:skywalking
+    image: stream/ts-order-other-service:skywalking-9.2.0
 
     ports:
       - 12032:12032
@@ -69,7 +67,7 @@ services:
 
 
   ts-config-service:
-    image: stream/ts-config-service:skywalking
+    image: stream/ts-config-service:skywalking-9.2.0
 
     ports:
       - 15679:15679
@@ -78,7 +76,7 @@ services:
 
 
   ts-station-service:
-    image: stream/ts-station-service:skywalking
+    image: stream/ts-station-service:skywalking-9.2.0
 
     ports:
       - 12345:12345
@@ -87,7 +85,7 @@ services:
 
 
   ts-train-service:
-    image: stream/ts-train-service:skywalking
+    image: stream/ts-train-service:skywalking-9.2.0
 
     ports:
       - 14567:14567
@@ -96,7 +94,7 @@ services:
 
 
   ts-travel-service:
-    image: stream/ts-travel-service:skywalking
+    image: stream/ts-travel-service:skywalking-9.2.0
 
     ports:
       - 12346:12346
@@ -105,7 +103,7 @@ services:
 
 
   ts-travel2-service:
-    image: stream/ts-travel2-service:skywalking
+    image: stream/ts-travel2-service:skywalking-9.2.0
 
     ports:
       - 16346:16346
@@ -114,7 +112,7 @@ services:
 
 
   ts-preserve-service:
-    image: stream/ts-preserve-service:skywalking
+    image: stream/ts-preserve-service:skywalking-9.2.0
 
     ports:
       - 14568:14568
@@ -122,7 +120,7 @@ services:
       - train-ticket
 
   ts-preserve-other-service:
-    image: stream/ts-preserve-other-service:skywalking
+    image: stream/ts-preserve-other-service:skywalking-9.2.0
 
     ports:
       - 14569:14569
@@ -131,14 +129,14 @@ services:
 
 
   ts-basic-service:
-    image: stream/ts-basic-service:skywalking
+    image: stream/ts-basic-service:skywalking-9.2.0
     ports:
       - 15680:15680
     networks:
         - train-ticket
 
 #  ts-ticketinfo-service:
-#        image: stream/ts-ticketinfo-service:skywalking
+#        image: stream/ts-ticketinfo-service:skywalking-9.2.0
 #        
 #        ports:
 #          - 15681:15681
@@ -146,7 +144,7 @@ services:
 #          - train-ticket
 
   ts-price-service:
-    image: stream/ts-price-service:skywalking
+    image: stream/ts-price-service:skywalking-9.2.0
 
     ports:
       - 16579:16579
@@ -154,7 +152,7 @@ services:
       - train-ticket
 
   ts-notification-service:
-    image: stream/ts-notification-service:skywalking
+    image: stream/ts-notification-service:skywalking-9.2.0
 
     ports:
       - 17853:17853
@@ -162,7 +160,7 @@ services:
       - train-ticket
 
   ts-security-service:
-    image: stream/ts-security-service:skywalking
+    image: stream/ts-security-service:skywalking-9.2.0
 
     ports:
       - 11188:11188
@@ -171,7 +169,7 @@ services:
 
 
   ts-inside-payment-service:
-    image: stream/ts-inside-payment-service:no_error
+    image: stream/ts-inside-payment-service:skywalking-9.2.0-no-error
 
     ports:
       - 18673:18673
@@ -179,7 +177,7 @@ services:
       - train-ticket
 
   ts-execute-service:
-    image: stream/ts-execute-service:skywalking
+    image: stream/ts-execute-service:skywalking-9.2.0
 
     ports:
       - 12386:12386
@@ -187,7 +185,7 @@ services:
       - train-ticket
 
   ts-payment-service:
-    image: stream/ts-payment-service:skywalking
+    image: stream/ts-payment-service:skywalking-9.2.0
 
     ports:
       - 19001:19001
@@ -195,7 +193,7 @@ services:
       - train-ticket
 
   ts-rebook-service:
-    image: stream/ts-rebook-service:skywalking
+    image: stream/ts-rebook-service:skywalking-9.2.0
 
     ports:
       - 18886:18886
@@ -203,7 +201,7 @@ services:
       - train-ticket
 
   ts-cancel-service:
-    image: stream/ts-cancel-service:skywalking
+    image: stream/ts-cancel-service:skywalking-9.2.0
 
     ports:
       - 18885:18885
@@ -211,7 +209,7 @@ services:
       - train-ticket
 
   ts-assurance-service:
-    image: stream/ts-assurance-service:skywalking
+    image: stream/ts-assurance-service:skywalking-9.2.0
 
     ports:
       - 18890:18890
@@ -219,7 +217,7 @@ services:
       - train-ticket
 
   ts-seat-service:
-    image: stream/ts-seat-service:skywalking
+    image: stream/ts-seat-service:skywalking-9.2.0
 
     ports:
       - 18898:18898
@@ -227,7 +225,7 @@ services:
       - train-ticket
 
   ts-travel-plan-service:
-    image: stream/ts-travel-plan-service:skywalking
+    image: stream/ts-travel-plan-service:skywalking-9.2.0
 
     ports:
       - 14322:14322
@@ -235,7 +233,7 @@ services:
       - train-ticket
 
 #  ts-ticket-office-service:
-#        image: stream/ts-ticket-office-service:skywalking
+#        image: stream/ts-ticket-office-service:skywalking-9.2.0
 #        
 #        ports:
 #          - 16108:16108
@@ -248,7 +246,7 @@ services:
 #            - train-ticket
 
   ts-news-service:
-    image: stream/ts-news-service:skywalking
+    image: stream/ts-news-service:skywalking-9.2.0
 
     ports:
       - 12862:12862
@@ -256,14 +254,14 @@ services:
       - train-ticket
 
   ts-voucher-service:
-    image: stream/ts-voucher-service:skywalking
+    image: stream/ts-voucher-service:skywalking-9.2.0
     ports:
       - 16101:16101
     networks:
       - train-ticket
 
 #  ts-food-map-service:
-#        image: stream/ts-food-map-service:skywalking
+#        image: stream/ts-food-map-service:skywalking-9.2.0
 #        
 #        ports:
 #          - 18855:18855
@@ -276,7 +274,7 @@ services:
 #            - train-ticket
 
   ts-route-plan-service:
-    image: stream/ts-route-plan-service:skywalking
+    image: stream/ts-route-plan-service:skywalking-9.2.0
 
     ports:
       - 14578:14578
@@ -284,7 +282,7 @@ services:
       - train-ticket
 
   ts-food-service:
-    image: stream/ts-food-service:skywalking
+    image: stream/ts-food-service:skywalking-9.2.0
 
     ports:
       - 18856:18856
@@ -292,7 +290,7 @@ services:
       - train-ticket
 
   ts-consign-service:
-    image: stream/ts-consign-service:skywalking
+    image: stream/ts-consign-service:skywalking-9.2.0
 
     ports:
       - 16111:16111
@@ -300,7 +298,7 @@ services:
       - train-ticket
 
   ts-consign-price-service:
-    image: stream/ts-consign-price-service:skywalking
+    image: stream/ts-consign-price-service:skywalking-9.2.0
 
     ports:
       - 16110:16110
@@ -308,7 +306,7 @@ services:
       - train-ticket
 
   ts-admin-basic-info-service:
-    image: stream/ts-admin-basic-info-service:skywalking
+    image: stream/ts-admin-basic-info-service:skywalking-9.2.0
 
     ports:
       - 18767:18767
@@ -316,7 +314,7 @@ services:
       - train-ticket
 
   ts-admin-order-service:
-    image: stream/ts-admin-order-service:skywalking
+    image: stream/ts-admin-order-service:skywalking-9.2.0
 
     ports:
       - 16112:16112
@@ -324,7 +322,7 @@ services:
       - train-ticket
 
   ts-admin-route-service:
-    image: stream/ts-admin-route-service:skywalking
+    image: stream/ts-admin-route-service:skywalking-9.2.0
 
     ports:
       - 16113:16113
@@ -336,7 +334,7 @@ services:
       - train-ticket
 
   ts-admin-travel-service:
-    image: stream/ts-admin-travel-service:skywalking
+    image: stream/ts-admin-travel-service:skywalking-9.2.0
 
     ports:
       - 16114:16114
@@ -348,7 +346,7 @@ services:
       - train-ticket
 
   ts-admin-user-service:
-    image: stream/ts-admin-user-service:skywalking
+    image: stream/ts-admin-user-service:skywalking-9.2.0
 
     ports:
       - 16115:16115
@@ -360,7 +358,7 @@ services:
       - train-ticket
 
   ts-avatar-service:
-    image: stream/ts-avatar-service:skywalking
+    image: stream/ts-avatar-service:skywalking-9.2.0
 
     ports:
       - 17001:17001
@@ -368,7 +366,7 @@ services:
       - train-ticket
 
   ts-delivery-service:
-    image: stream/ts-delivery-service:skywalking
+    image: stream/ts-delivery-service:skywalking-9.2.0
 
     ports:
       - 18807:18807
@@ -376,7 +374,7 @@ services:
       - train-ticket
 
   ts-food-delivery-service:
-    image: stream/ts-food-delivery-service:skywalking
+    image: stream/ts-food-delivery-service:skywalking-9.2.0
 
     ports:
       - 18957:18957
@@ -384,7 +382,7 @@ services:
       - train-ticket
 
   ts-gateway-service:
-    image: stream/ts-gateway-service:skywalking
+    image: stream/ts-gateway-service:skywalking-9.2.0
 
     ports:
       - 18888:18888
@@ -392,7 +390,7 @@ services:
       - train-ticket
 
   ts-station-food-service:
-    image: stream/ts-station-food-service:skywalking
+    image: stream/ts-station-food-service:skywalking-9.2.0
 
     ports:
       - 18855:18855
@@ -400,7 +398,7 @@ services:
       - train-ticket
 
   ts-train-food-service:
-    image: stream/ts-train-food-service:skywalking
+    image: stream/ts-train-food-service:skywalking-9.2.0
 
     ports:
       - 19999:19999
@@ -408,7 +406,7 @@ services:
       - train-ticket
 
   ts-wait-order-service:
-    image: stream/ts-wait-order-service:skywalking
+    image: stream/ts-wait-order-service:skywalking-9.2.0
 
     ports:
       - 17525:17525

@@ -87,7 +87,7 @@ services:
       - train-ticket
 
   oap-server:
-    image: apache/skywalking-oap-server:9.2.0
+    image: apache/skywalking-oap-server:10.0.0
     container_name: oap-server
     restart: always
     networks:
@@ -99,7 +99,7 @@ services:
       - SW_HEALTH_CHECKER=default
 
   oap-ui:
-    image: apache/skywalking-ui:9.2.0
+    image: apache/skywalking-ui:10.0.0
     container_name: oap-ui
     restart: always
     environment:

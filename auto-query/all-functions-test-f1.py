@@ -1,5 +1,6 @@
 import time
 import requests
+from datetime import datetime
 
 """
 全流程测试
@@ -61,7 +62,7 @@ def query_tickets():
                 "endPlace": place_pair[1],
             }
     print("发送车票查询请求")
-    response = requests.post(query_url, timeout=5, headers=headers, json = query_payload)
+    response = requests.post(query_url, timeout=10, headers=headers, json = query_payload)
     if response.status_code == 200:
         res_data = response.json()
         if res_data["status"] == 1:
@@ -89,7 +90,7 @@ def preserve_normal_ticket(trip_id, contacts_id):
     }
     
     print("发送车票预订请求")
-    response = requests.post(preserve_url, timeout=5, headers=headers, json = preserve_payload)
+    response = requests.post(preserve_url, timeout=10, headers=headers, json = preserve_payload)
     if response.status_code == 200:
         res_data = response.json()
         if res_data["status"] == 1:
@@ -108,7 +109,7 @@ def pay_ticket(trip_id, order_id: str):
         "tripId": trip_id
     }
 
-    response = requests.post(pay_url, timeout=5, headers=headers, json=pay_paytload)
+    response = requests.post(pay_url, timeout=10, headers=headers, json=pay_paytload)
     if response.status_code == 200:
         print("车票支付")
         return response.json()
@@ -119,16 +120,21 @@ def cancel_ticket(order_id:str):
     global uid, headers, address, token
     cancel_url = f"{address}/api/v1/cancelservice/cancel/{order_id}/{uid}"
 
-    response =  requests.get(cancel_url, timeout=5, headers=headers)
+    response =  requests.get(cancel_url, timeout=10, headers=headers)
     if response.status_code == 200:
         print("车票取消")
     else:
         raise Exception(f"车票取消失败，状态码：{response.status_code}")
 
 def main():
+    current_time = datetime.now()
+    # 格式化时间字符串
+    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+    # 打印格式化的当前时间
+    print("当前时间: ", formatted_time)
     trip_id = "Z1234"
     # 每次重启数据库时 contact_id 会改变
-    contact_id = "5b91d286-6b23-48fe-8e3c-a4fe815a74ed" 
+    contact_id = "d2a0c450-b180-40d9-8e29-a6e63afe84d1" 
 
     query_tickets()
     data = preserve_normal_ticket(trip_id, contact_id)
