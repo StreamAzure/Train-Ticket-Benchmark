@@ -64,6 +64,17 @@ def insert_text_after_line(root_dir, search_line, new_texts):
                     with open(dockerfile_path,'w',encoding="gb18030") as df:
                         df.writelines(dockerfile_content)
 
+def insert_text_after_line_file(file, search_line, text):
+    with open(file) as df:
+        file_content = df.readlines()
+        # 找到特定的行，并在其之后插入新行
+        for i, line in enumerate(file_content):
+            # print(line)
+            if search_line in line:
+                file_content.insert(i+1, text + '\n')
+        with open(file,'w') as df:
+            df.writelines(file_content)
+
 # 调用函数，传入Dockerfile的路径，要搜索的行文本，以及要插入的新行文本
 search_text = 'ADD ./apache-skywalking-java-agent-9.2.0.tgz /app/'
 new_texts = [
@@ -72,6 +83,7 @@ new_texts = [
 ]
 
 # 从当前目录开始搜索Dockerfile
-current_directory = os.getcwd()
-insert_text_after_line(current_directory, search_text, new_texts)
+# current_directory = os.getcwd()
+# insert_text_after_line(current_directory, search_text, new_texts)
     
+insert_text_after_line_file("/home/stream/Research/Train-Ticket-Benchmark/deployment/docker-compose-manifests/docker-compose-skywalking-1.yml", "MYSQL_ROOT_PASSWORD: root", "    privileged: true")
