@@ -1,0 +1,379 @@
+version: '3'
+services: 
+  interceptor:
+    image: mitmproxy/mitmproxy:10.2.4
+    container_name: mitmproxy-interceptor
+    command: mitmweb -s /interceptor/demo.py --web-host 0.0.0.0
+    ports:
+      - "8900:8081" # 通过 localhost:8900 访问 mitmweb
+      - "8070:8080" # 监听端口，各微服务的代理服务器需设置为 interceptor:8080
+    volumes:
+      - /home/stream/Research/Train-Ticket-Benchmark/http-interceptor:/interceptor
+    networks:
+      - train-ticket
+      
+  nacos:
+    image: nacos/nacos-server:2.0.1
+    ports:
+      - 8848:8848
+      - 9848:9848
+    environment:
+      - MODE=standalone
+    networks:
+      - train-ticket
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - http.port=9200
+      - http.cors.enabled=true
+      - http.cors.allow-origin="*"
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=false
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      - TZ=Asia/Shanghai    
+      - xpack.security.enabled=false
+    volumes:      
+      - /home/stream/Research/Train-Ticket-Benchmark/es/plugins:/usr/share/elasticsearch/plugins
+      - /home/stream/Research/Train-Ticket-Benchmark/es/data:/usr/share/elasticsearch/data
+    ports:      
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - train-ticket
+
+  kibana:    # 适用于 Elasticsearch 的源可用数据可视化仪表板软件
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    container_name: kibana
+    depends_on:      
+      - elasticsearch  
+    environment:      
+      - elasticsearch.hosts=http://elasticsearch:9200
+      - TZ=Asia/Shanghai    
+    ports:      
+      - 5601:5601
+    volumes:
+      - /home/stream/Research/Train-Ticket-Benchmark/kibana/data:/usr/share/kibana/data
+      # 这个data目录需要在宿主机 sudo chmod 775，否则容器内部会报无权限读写
+    networks:
+      - train-ticket
+
+  oap-server:
+    image: apache/skywalking-oap-server:10.0.0
+    container_name: oap-server
+    restart: always
+    networks:
+      - train-ticket
+    environment:
+      - TZ=Asia/Shanghai
+      - SW_STORAGE=elasticsearch
+      - SW_STORAGE_ES_CLUSTER_NODES=elasticsearch:9200
+      - SW_HEALTH_CHECKER=default
+
+  oap-ui:
+    image: apache/skywalking-ui:10.0.0
+    container_name: oap-ui
+    restart: always
+    environment:
+      - SW_OAP_ADDRESS=http://oap-server:12800
+    ports:
+      - "8090:8080"
+    networks:
+      - train-ticket
+
+  redis:
+    image: redis:7.0.0
+    ports:
+      - 6379:6379
+    networks:
+      - train-ticket
+
+  ts-auth-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-user-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-route-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+        - train-ticket
+
+
+  ts-contacts-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-order-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-order-other-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/master/conf/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - train-ticket
+
+  ts-order-other-mysql-slave:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/slave/conf/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - train-ticket
+
+  ts-config-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+    command: "--innodb_use_native_aio=0"
+
+  ts-station-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-train-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+
+  ts-travel-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+    command: "--innodb_use_native_aio=0"
+
+  ts-travel2-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+    command: "--innodb_use_native_aio=0"
+
+  ts-price-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-notification-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-security-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-inside-payment-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-payment-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-rebook-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-assurance-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-news-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-voucher-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    expose:
+      - "3306"
+    networks:
+      - train-ticket
+
+  ts-consign-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-consign-price-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-food-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-delivery-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+    command: "--innodb_use_native_aio=0"
+
+  ts-food-delivery-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+    command: "--innodb_use_native_aio=0"
+
+  ts-gateway-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+    command: "--innodb_use_native_aio=0"
+
+  ts-station-food-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+  ts-train-food-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+  
+  ts-wait-order-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - train-ticket
+
+networks:
+    train-ticket:
+      # driver: overlay
+      driver: bridge
