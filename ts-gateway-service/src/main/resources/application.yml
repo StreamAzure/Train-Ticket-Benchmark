@@ -113,6 +113,11 @@ spring:
           predicates:
             - Path=/api/v1/orderOtherService/**
 
+        - id: order-other2
+          uri: lb://${ORDER_OTHER_SERVICE_HOST:ts-order-other-service2}
+          predicates:
+            - Path=/api/v1/orderOtherService2/**
+
         - id: order
           uri: lb://${ORDER_SERVICE_HOST:ts-order-service}
           predicates:

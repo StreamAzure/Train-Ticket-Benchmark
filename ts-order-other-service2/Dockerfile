@@ -2,12 +2,10 @@ FROM openjdk:8-jre
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
-ADD ./target/ts-order-other-service-1.0.jar /app/
+ADD ./target/ts-order-other-service2-1.0.jar /app/
 ADD ./apache-skywalking-java-agent-9.2.0.tgz /app/
 ADD ./ca.pem /app/
 ADD ./http-proxy-agent-1.3.5-dist.jar /app/
-ADD ./http-proxy-agent-1.3.5-dist.jar /app/
-ADD ./ca.pem /app/
 
 ENV SW_AGENT_NAME=ts-order-other-service2
 ENV SW_AGENT_COLLECTOR_BACKEND_SERVICES=oap-server:11800
