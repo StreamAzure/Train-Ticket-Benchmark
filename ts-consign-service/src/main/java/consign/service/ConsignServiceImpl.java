@@ -49,7 +49,10 @@ public class ConsignServiceImpl implements ConsignService {
 
         ConsignRecord consignRecord = new ConsignRecord();
         //Set the record attribute
-        consignRecord.setId(UUID.randomUUID().toString());
+        // ---------------- Fault Replication ------------------- //
+//        consignRecord.setId(UUID.randomUUID().toString());
+        consignRecord.setId(consignRequest.getOrderId());
+        // ------------------------------------------------------ //
         consignRecord.setOrderId(consignRequest.getOrderId().toString());
         consignRecord.setAccountId(consignRequest.getAccountId().toString());
         ConsignServiceImpl.LOGGER.info("[insertConsignRecord][Insert Info][handle date: {}, target date: {}]", consignRequest.getHandleDate(), consignRequest.getTargetDate());
@@ -145,6 +148,28 @@ public class ConsignServiceImpl implements ConsignService {
         }else {
             LOGGER.warn("[queryByConsignee][No Content according to consignee][consignee: {}]", consignee);
             return new Response<>(0, "No Content according to consignee", null);
+        }
+    }
+
+    // ----------------- Fault Replication -------------------//
+    @Override
+    public Response insertConsignRecordFault(UUID orderId, Consign request, HttpHeaders headers) {
+        // Query the consign records at first
+        ConsignRecord consignRecords = repository.findByOrderId(orderId.toString());
+        if (consignRecords == null){
+            // no consign data of this order
+            // insert
+            try {
+                // Fault Replication
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Restore the interrupted status
+                e.printStackTrace();
+            }
+            return insertConsignRecord(request, headers);
+        }
+        else{
+            return updateConsignRecord(request, headers);
         }
     }
 }

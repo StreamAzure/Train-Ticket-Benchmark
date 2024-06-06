@@ -56,4 +56,6 @@ public interface ConsignService {
      * @return Response
      */
     Response queryByConsignee(String consignee, HttpHeaders headers);
+
+    Response insertConsignRecordFault(UUID id, Consign request, HttpHeaders headers);
 }

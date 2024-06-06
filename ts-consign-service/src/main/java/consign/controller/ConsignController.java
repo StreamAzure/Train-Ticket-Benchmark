@@ -2,6 +2,7 @@ package consign.controller;
 
 import consign.entity.Consign;
 import consign.service.ConsignService;
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,15 @@ public class ConsignController {
     public HttpEntity findByConsignee(@PathVariable String consignee, @RequestHeader HttpHeaders headers) {
         logger.info("[findByConsignee][Find consign by consignee][consignee: {}]", consignee);
         return ok(service.queryByConsignee(consignee, headers));
+    }
+
+    // ----------------- Fault Replication -------------------//
+    @PostMapping(value = "/consigns/fault/{id}")
+    public HttpEntity insertConsignFault(@PathVariable String id, @RequestBody Consign request,
+                                    @RequestHeader HttpHeaders headers) {
+        logger.info("[insertConsignFault][Insert consign record][id:{}]", request.getId());
+        UUID newId = UUID.fromString(id);
+        return ok(service.insertConsignRecordFault(newId, request, headers));
     }
 
 }
